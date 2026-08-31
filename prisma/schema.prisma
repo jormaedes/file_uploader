@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             Int     @id @default(autoincrement())
+  username       String  @unique
+  password       String
+  firstName      String
+  lastName       String
+  profilePicture String? // URL do Cloudinary, opcional
+
+  folders Folder[]
+  files   File[]
+}
+
+model Folder {
+  id       Int      @id @default(autoincrement())
+  name     String
+  parentId Int?
+  parent   Folder?  @relation("FolderToFolder", fields: [parentId], references: [id])
+  children Folder[] @relation("FolderToFolder")
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  files     File[]
+  createdAt DateTime @default(now())
+}
+
+model File {
+  id           Int      @id @default(autoincrement())
+  name         String
+  type         String // "pdf", "zip", "image", etc.
+  url          String
+  cloudinaryId String
+  size         Int?
+  uploadedAt   DateTime @default(now())
+
+  folderId Int?
+  folder   Folder? @relation(fields: [folderId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}

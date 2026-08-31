@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "prisma generate && prisma migrate deploy",
     "start": "node --env-file=.env index.js",
     "dev": "node --env-file=.env --watch index.js"
   },
@@ -19,5 +20,24 @@
   "bugs": {
     "url": "https://github.com/jormaedes/file_uploader/issues"
   },
-  "homepage": "https://github.com/jormaedes/file_uploader#readme"
+  "homepage": "https://github.com/jormaedes/file_uploader#readme",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "multer": "^2.3.0",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "@types/pg": "^8.23.1",
+    "prisma": "^7.10.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
 }
