@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import indexRouter from './routers/index.js';
 
 const __dirname = import.meta.dirname;
 
@@ -10,9 +11,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.render('homepage', { user: req.user });
-});
+app.use('/', indexRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
