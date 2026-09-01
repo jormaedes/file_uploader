@@ -7,11 +7,11 @@ import { fieldSignup } from '../validators/fieldSignup.js';
 
 const signupRouter = Router();
 
-signupRouter.get('/signup', isGuest, (req, res) => {
+signupRouter.get('/', isGuest, (req, res) => {
 	res.render('siginp', { user: req.user });
 });
 
-signupRouter.post('/signup', isGuest, fieldSignup, async (req, res, next) => {
+signupRouter.post('/', isGuest, fieldSignup, async (req, res, next) => {
 	try {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {

@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import indexRouter from './routers/index.js';
 import signupRouter from './routers/siginupRouter.js';
+import loginRouter from './routers/loginRouter.js';
 
 const __dirname = import.meta.dirname;
 
@@ -13,7 +14,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', indexRouter);
-app.use('/', signupRouter);
+app.use('/signup', signupRouter);
+app.use('/login', loginRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
