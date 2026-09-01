@@ -18,7 +18,7 @@ model User {
   password       String
   firstName      String
   lastName       String
-  profilePicture String? // URL do Cloudinary, opcional
+  profilePicture String? @default("https://cdn-icons-png.flaticon.com/512/149/149071.png")
 
   folders Folder[]
   files   File[]

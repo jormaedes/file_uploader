@@ -2,17 +2,11 @@ import { Router } from 'express';
 import multer from 'multer';
 import cloudinary from '../lib/cloudinary.js';
 import { prisma } from '../lib/prisma.js';
+import { isAuth } from '../middleware/auth.js';
 
 const uploadRouter = Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
-
-function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated && req.isAuthenticated()) {
-		return next();
-	}
-	return res.status(401).json({ error: 'Utilizador não autenticado. Faça login primeiro.' });
-}
 
 function uploadToCloudinary(buffer, cloudinaryFolder) {
 	return new Promise((resolve, reject) => {
@@ -24,7 +18,7 @@ function uploadToCloudinary(buffer, cloudinaryFolder) {
 	});
 }
 
-uploadRouter.post('/upload', ensureAuthenticated, upload.single('file'), async (req, res, next) => {
+uploadRouter.post('/upload', isAuth, upload.single('file'), async (req, res, next) => {
 	try {
 		if (!req.file) {
 			return res.status(400).json({ error: 'Nenhum ficheiro enviado.' });
