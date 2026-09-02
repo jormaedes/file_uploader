@@ -3,6 +3,9 @@ import { isAuthenticated, isGuest } from '../middleware/auth.js';
 import { prisma } from '../lib/prisma.js';
 import { deleteFolderRecursive } from '../utils/utils.js';
 import cloudinary from '../lib/cloudinary.js';
+import multer from 'multer';
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const homeUserRouter = Router();
 
@@ -169,6 +172,49 @@ homeUserRouter.get('/:username/folders/:folderId/delete', isAuthenticated, async
 	} catch (error) {
 		console.log(error);
 		res.status(500).send(`'Internal server error' ${error}`);
+	}
+});
+
+homeUserRouter.post('/:username/folders/:folderId/uploadFile', upload.single('file'), isAuthenticated, async (req, res) => {
+	try {
+		const { username, folderId } = req.params;
+		const userId = req.session.userId;
+		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
+		if (username !== userAuth.username) {
+			return res.status(403).send('Forbidden');
+		}
+		const pathToFolder = await getPathToFolder(folderId, username);
+		if (!pathToFolder) {
+			return res.status(404).send('Folder not found');
+		}
+		const file = req.file;
+		if (!file) {
+			return res.status(400).send('No file uploaded');
+		}
+		const uploadResult = await cloudinary.uploader.upload_stream(
+			{
+				folder: `${pathToFolder}`,
+				public_id: file.originalname,
+				resource_type: 'auto',
+			},
+			(error, result) => {
+				if (error) {
+					console.log(error);
+					return res.status(500).send('Internal server error');
+				}
+				prisma.file.create({
+					data: {
+						name: file.originalname,
+						userId: userAuth.id,
+						folderId: parseInt(folderId),
+					},
+				});
+				res.redirect(`/home/${username}/folders/${folderId}`);
+			}
+		).end(file.buffer);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Internal server error');
 	}
 });
 
