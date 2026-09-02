@@ -21,7 +21,7 @@
 					<%= file.size %>
 				</div>
 				<a href="<%= file.url %>" download="<%= file.name %>">Download</a>
-				<button onclick="openConfirmDeleteDialog('<%= file.id %>', '<%= file.name %>')">Delete</button>
+				<button onclick="openDeleteFileDialog('<%= file.id %>', '<%= file.name %>')">Delete</button>
 			</div>
 			<% } %>
 </div>
