@@ -134,7 +134,6 @@ homeUserRouter.post('/:username/folders/:folderId/createFolder', isAuthenticated
 			},
 		});
 		res.redirect(`/home/${username}/folders/${currentFolder.id}`);
-		// res.send('Success');
 	} catch (error) {
 		console.log(error);
 		res.status(500).send('Internal server error');
