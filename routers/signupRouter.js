@@ -28,16 +28,14 @@ signupRouter.post('/', isGuest, fieldSignup, async (req, res, next) => {
 				lastName,
 			},
 		});
-		const homeUserFolder = user.id;
-		await cloudinary.api.create_folder(`${homeUserFolder}/`);
+		await cloudinary.api.create_folder(`${user.username}`);
 		await prisma.folder.create({
 			data: {
-				name: `${homeUserFolder}/`,
+				name: `${user.username}`,
 				userId: user.id,
 				parentId: null,
 			},
 		});
-		console.log('User created:', user);
 		res.redirect('/login');
 	} catch (error) {
 		next(error);
