@@ -86,7 +86,7 @@
 		const closeConfirmDeleteDialog = document.getElementById('closeConfirmDeleteDialog');
 		const openConfirmDeleteDialog = (folderId, folderName) => {
 			confirmDeleteDialog.showModal();
-			confirmDeleteDialog.querySelector('a').href = `/home/${user.username}/folders/${folderId}/delete`;
+			confirmDeleteDialog.querySelector('a').href = `/home/<%= user.username %>/folders/${folderId}/delete`;
 		};
 		closeConfirmDeleteDialog.addEventListener('click', () => {
 			confirmDeleteDialog.close();
