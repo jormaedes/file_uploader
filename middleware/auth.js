@@ -5,7 +5,7 @@ export async function isGuest(req, res, next) {
 		return next();
 	}
 	const user = await prisma.user.findUnique({ where: { id: req.session.userId } });
-	return res.redirect(`/homeUser/${user.username}`);
+	return res.redirect(`/home/${user.username}`);
 }
 
 export function isAuthenticated(req, res, next) {

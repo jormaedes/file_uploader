@@ -27,7 +27,7 @@ loginRouter.post('/', isGuest, fieldLogin, async (req, res, next) => {
 			return res.render('login', { errors: [{ msg: 'Invalid password' }] });
 		}
 		req.session.userId = user.id;
-		res.redirect(`/homeUser/${user.username}`);
+		res.redirect(`/home/${user.username}`);
 	} catch (error) {
 		next(error);
 	}
