@@ -4,6 +4,7 @@ import indexRouter from './routers/index.js';
 import signupRouter from './routers/signupRouter.js';
 import loginRouter from './routers/loginRouter.js';
 import homeUserRouter from './routers/homeUserRouter.js';
+import logoutRouter from './routers/logoutRouter.js';
 import session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { prisma } from './lib/prisma.js';
@@ -38,7 +39,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', indexRouter);
 app.use('/signup', signupRouter);
 app.use('/login', loginRouter);
-app.use('/homeUser', homeUserRouter);
+app.use('/home', homeUserRouter);
+app.use('/logout', logoutRouter);
 
 
 const PORT = process.env.PORT || 3000;
