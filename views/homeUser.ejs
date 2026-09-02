@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>HOME | <%= user.username %>
+	<title>home | <%= user.username %>
 	</title>
 </head>
 
@@ -60,22 +60,14 @@
 			</li>
 			<% } %>
 				<% folderChildren.forEach(folder=> { %>
-					<li>
-						<a href="<%= '/home/' + user.username + '/folders/' + folder.id %>">
-							<%= folder.name %>
-						</a>
-						<button
-							onclick="openConfirmDeleteDialog('<%= folder.id %>', '<%= folder.name %>')">Delete</button>
-					</li>
-					<% }) %>
+					<%- include('listContent', { type: 'folder' , folder: folder, user: user }) %>
+						<% }) %>
 	</ul>
 	<p>Your files:</p>
 	<ul>
 		<% files.forEach(file=> { %>
-			<li>
-				<%= file.name %>
-			</li>
-			<% }) %>
+			<%- include('listContent', { type: 'file' , file: file, user: user }) %>
+				<% }) %>
 	</ul>
 
 	<script>

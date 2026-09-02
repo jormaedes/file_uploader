@@ -1,0 +1,27 @@
+<div>
+	<% if (type==="folder" ) { %>
+		<div>
+			<a href="<%= '/home/' + user.username + '/folders/' + folder.id %>">
+				<%= folder.name %>
+			</a>
+			<button onclick="openConfirmDeleteDialog('<%= folder.id %>', '<%= folder.name %>')">Delete</button>
+		</div>
+		<% } else if (type==='file' ) { %>
+			<div>
+				<div>
+					<%= file.name %>
+				</div>
+				<div>
+					<%= file.type %>
+				</div>
+				<div>
+					<%= file.uploadedAt %>
+				</div>
+				<div>
+					<%= file.size %>
+				</div>
+				<a href="<%= file.url %>" download="<%= file.name %>">Download</a>
+				<button onclick="openConfirmDeleteDialog('<%= file.id %>', '<%= file.name %>')">Delete</button>
+			</div>
+			<% } %>
+</div>
