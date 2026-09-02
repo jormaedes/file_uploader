@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import indexRouter from './routers/index.js';
-import signupRouter from './routers/siginupRouter.js';
+import signupRouter from './routers/signupRouter.js';
 import loginRouter from './routers/loginRouter.js';
 
 const __dirname = import.meta.dirname;

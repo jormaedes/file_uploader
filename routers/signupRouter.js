@@ -8,14 +8,14 @@ import { fieldSignup } from '../validators/fieldSignup.js';
 const signupRouter = Router();
 
 signupRouter.get('/', isGuest, (req, res) => {
-	res.render('siginp', { user: req.user });
+	res.render('signup', { user: req.user });
 });
 
 signupRouter.post('/', isGuest, fieldSignup, async (req, res, next) => {
 	try {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			return res.status(400).render('siginp', { errors: errors.array(), user: req.user });
+			return res.status(400).render('signup', { errors: errors.array(), user: req.user });
 		}
 		const { username, password, firstName, lastName } = req.body;
 		const hashedPassword = await bcrypt.hash(password, 10);
