@@ -1,21 +1,19 @@
-export function isGuest(req, res, next) {
-	if (req.isAuthenticated && req.isAuthenticated()) {
-		return res.redirect('/');
-	}
-	next();
-}
+import { prisma } from '../lib/prisma.js';
 
-export function isAuth(req, res, next) {
-	if (req.isAuthenticated && req.isAuthenticated()) {
+export async function isGuest(req, res, next) {
+	if (!req.session.userId) {
 		return next();
 	}
-
-	if (req.originalUrl.startsWith('/api') || req.headers.accept?.includes('application/json')) {
-		return res.status(401).json({ error: 'Utilizador não autenticado. Faça login primeiro.' });
-	}
-
-	res.redirect('/login');
+	const user = await prisma.user.findUnique({ where: { id: req.session.userId } });
+	return res.redirect(`/homeUser/${user.username}`);
 }
 
-export const ensureAuthenticated = isAuth;
+export function isAuthenticated(req, res, next) {
+	if (req.session.userId) {
+		return next();
+	}
+	return res.redirect('/login');
+}
+
+export const ensureAuthenticated = isAuthenticated;
 export const ensureGuest = isGuest;

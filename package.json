@@ -25,6 +25,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
+    "@quixo3/prisma-session-store": "^3.1.21",
     "@tailwindcss/cli": "^4.3.3",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.11.0",
