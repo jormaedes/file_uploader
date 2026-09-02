@@ -52,14 +52,22 @@
 
 	<p>Your folders:</p>
 	<ul>
-		<% folderChildren.forEach(folder=> { %>
+		<% if (currentFolder.parentId) { %>
 			<li>
-				<a href="<%= '/home/' + user.username + '/folders/' + folder.id %>">
-					<%= folder.name %>
+				<a href="<%= '/home/' + user.username + '/folders/' + currentFolder.parentId %>">
+					..
 				</a>
-				<button onclick="openConfirmDeleteDialog('<%= folder.id %>', '<%= folder.name %>')">Delete</button>
 			</li>
-			<% }) %>
+			<% } %>
+				<% folderChildren.forEach(folder=> { %>
+					<li>
+						<a href="<%= '/home/' + user.username + '/folders/' + folder.id %>">
+							<%= folder.name %>
+						</a>
+						<button
+							onclick="openConfirmDeleteDialog('<%= folder.id %>', '<%= folder.name %>')">Delete</button>
+					</li>
+					<% }) %>
 	</ul>
 	<p>Your files:</p>
 	<ul>
