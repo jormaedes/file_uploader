@@ -140,4 +140,59 @@ homeUserRouter.post('/:username/folders/:folderId/createFolder', isAuthenticated
 	}
 });
 
+async function isEmptyFolder(folderId) {
+	try {
+		const folderChildren = await prisma.folder.findMany({
+			where: {
+				parentId: folderId,
+			},
+		});
+		const files = await prisma.file.findMany({
+			where: {
+				folderId: folderId,
+			},
+		});
+		return folderChildren.length === 0 && files.length === 0;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
+}
+
+homeUserRouter.get('/:username/folders/:folderId/delete', isAuthenticated, async (req, res) => {
+	try {
+		const { username, folderId } = req.params;
+		const userId = req.session.userId;
+		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
+		if (username !== userAuth.username) {
+			return res.status(403).send('Forbidden');
+		}
+		const pathToFolder = await getPathToFolder(folderId, username);
+		console.log(pathToFolder);
+		const currentFolder = await prisma.folder.findFirst({
+			where: {
+				id: parseInt(folderId),
+				userId: userAuth.id,
+			},
+		});
+		if (!currentFolder) {
+			return res.status(404).send('Folder not found');
+		}
+		if (await isEmptyFolder(parseInt(folderId))) {
+			await cloudinary.api.delete_folder(`${pathToFolder}`);
+			await prisma.folder.delete({
+				where: {
+					id: parseInt(folderId),
+				},
+			});
+			return res.redirect(`/home/${username}/folders/${currentFolder.parentId}`);
+		}
+		return res.send(`${currentFolder.name} is not empty`);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Internal server error');
+	}
+});
+
+
 export default homeUserRouter;
