@@ -42,12 +42,23 @@
 		<button id="openUploadFileDialog">Upload a file</button>
 	</div>
 
+	<dialog id="confirmDeleteDialog">
+		<p>Are you sure you want to delete this folder?</p>
+		<a id="confirmDeleteLink" href="#">
+			Delete
+		</a>
+		<button id="closeConfirmDeleteDialog">Cancel</button>
+	</dialog>
+
 	<p>Your folders:</p>
 	<ul>
 		<% folderChildren.forEach(folder=> { %>
-			<li><a href="<%= '/home/' + user.username + '/folders/' + folder.id %>">
+			<li>
+				<a href="<%= '/home/' + user.username + '/folders/' + folder.id %>">
 					<%= folder.name %>
-				</a></li>
+				</a>
+				<button onclick="openConfirmDeleteDialog('<%= folder.id %>', '<%= folder.name %>')">Delete</button>
+			</li>
 			<% }) %>
 	</ul>
 	<p>Your files:</p>
@@ -69,6 +80,16 @@
 		});
 		openUploadFileDialog.addEventListener('click', () => {
 			uploadFileDialog.showModal();
+		});
+
+		const confirmDeleteDialog = document.getElementById('confirmDeleteDialog');
+		const closeConfirmDeleteDialog = document.getElementById('closeConfirmDeleteDialog');
+		const openConfirmDeleteDialog = (folderId, folderName) => {
+			confirmDeleteDialog.showModal();
+			confirmDeleteDialog.querySelector('a').href = `/home/${user.username}/folders/${folderId}/delete`;
+		};
+		closeConfirmDeleteDialog.addEventListener('click', () => {
+			confirmDeleteDialog.close();
 		});
 	</script>
 </body>
