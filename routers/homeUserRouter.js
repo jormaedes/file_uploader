@@ -191,27 +191,34 @@ homeUserRouter.post('/:username/folders/:folderId/uploadFile', upload.single('fi
 		if (!file) {
 			return res.status(400).send('No file uploaded');
 		}
-		const uploadResult = await cloudinary.uploader.upload_stream(
-			{
-				folder: `${pathToFolder}`,
-				public_id: file.originalname,
-				resource_type: 'auto',
-			},
-			(error, result) => {
-				if (error) {
-					console.log(error);
-					return res.status(500).send('Internal server error');
+		const uploadResult = await new Promise((resolve, reject) => {
+			cloudinary.uploader.upload_stream(
+				{
+					folder: `${pathToFolder}`,
+					resource_type: 'auto',
+				},
+				(error, result) => {
+					if (error) {
+						console.log(error);
+						reject(error);
+					}
+					resolve(result);
 				}
-				prisma.file.create({
-					data: {
-						name: file.originalname,
-						userId: userAuth.id,
-						folderId: parseInt(folderId),
-					},
-				});
-				res.redirect(`/home/${username}/folders/${folderId}`);
-			}
-		).end(file.buffer);
+			).end(file.buffer);
+		}).then(async (uploadResult) => {
+			await prisma.file.create({
+				data: {
+					name: file.originalname,
+					type: uploadResult.resource_type + '/' + uploadResult.format,
+					url: uploadResult.url,
+					size: uploadResult.bytes,
+					cloudinaryId: uploadResult.public_id,
+					userId: userAuth.id,
+					folderId: parseInt(folderId),
+				},
+			});
+		});
+		res.redirect(`/home/${username}/folders/${folderId}`);
 	} catch (error) {
 		console.log(error);
 		res.status(500).send('Internal server error');
