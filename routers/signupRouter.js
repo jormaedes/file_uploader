@@ -9,7 +9,7 @@ import cloudinary from '../lib/cloudinary.js';
 const signupRouter = Router();
 
 signupRouter.get('/', isGuest, (req, res) => {
-	res.render('signup', { user: req.user });
+	res.render('signup', { errors: null });
 });
 
 signupRouter.post('/', isGuest, fieldSignup, async (req, res, next) => {
@@ -33,7 +33,8 @@ signupRouter.post('/', isGuest, fieldSignup, async (req, res, next) => {
 		await prisma.folder.create({
 			data: {
 				name: `${homeUserFolder}/`,
-				userId: user.id
+				userId: user.id,
+				parentId: null,
 			},
 		});
 		console.log('User created:', user);

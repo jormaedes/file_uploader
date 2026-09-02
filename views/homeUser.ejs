@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>
+		<%= user.username %> - Home User
+	</title>
+</head>
+
+<body>
+	<p>Welcome, <%= user.username %>
+	</p>
+
+	<p>Current folder: <%= currentFolder.name %>
+	</p>
+
+	<div>
+		<dialog id="newFolderDialog">
+			<summary>Create new folder</summary>
+			<form action="<%= currentFolder.id + '/createFolder' %>" method="post">
+				<input type="text" name="folderName" placeholder="Folder name" required>
+				<button type="submit">Create folder</button>
+			</form>
+		</dialog>
+		<dialog id="uploadFileDialog">
+			<summary>Add a new file</summary>
+			<form action="" method="post" enctype="multipart/form-data">
+				<input type="text" name="fileName" placeholder="File name" required>
+				<input type="file" name="file" required>
+				<button type="submit">Add file</button>
+			</form>
+		</dialog>
+	</div>
+
+	<div>
+		<button id="openNewFolderDialog">New folder</button>
+		<button id="openUploadFileDialog">Upload a file</button>
+	</div>
+
+	<p>Your folders:</p>
+	<ul>
+		<% folderChildren.forEach(folder=> { %>
+			<li><a href="<%= currentFolder.name + '/' + folder.name + '/' %>">
+					<%= folder.name %>
+				</a></li>
+			<% }) %>
+	</ul>
+	<p>Your files:</p>
+	<ul>
+		<% files.forEach(file=> { %>
+			<li>
+				<%= file.name %>
+			</li>
+			<% }) %>
+	</ul>
+
+</body>
+
+</html>

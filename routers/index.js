@@ -1,9 +1,10 @@
 import { Router } from "express";
+import { isGuest } from "../middleware/auth.js";
 
 const indexRouter = Router();
 
-indexRouter.get("/", (req, res) => {
-	res.render("homepage", { user: req.user });
+indexRouter.get("/", isGuest, (req, res) => {
+	res.render("homepage");
 });
 
 export default indexRouter;
