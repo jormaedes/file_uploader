@@ -114,7 +114,6 @@ homeUserRouter.post('/:username/folders/:folderId/createFolder', isAuthenticated
 			return res.status(403).send('Forbidden');
 		}
 		const pathToFolder = await getPathToFolder(folderId, username);
-		console.log(pathToFolder);
 		if (!pathToFolder) {
 			return res.status(404).send('Folder not found');
 		}
@@ -150,7 +149,6 @@ homeUserRouter.get('/:username/folders/:folderId/delete', isAuthenticated, async
 			return res.status(403).send('Forbidden');
 		}
 		const pathToFolder = await getPathToFolder(folderId, username);
-		console.log(pathToFolder);
 		const currentFolder = await prisma.folder.findFirst({
 			where: {
 				id: parseInt(folderId),
