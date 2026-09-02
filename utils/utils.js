@@ -13,7 +13,7 @@ export async function getAllSubFolders(folderPath) {
 		}
 	} catch (error) {
 		if (error.http_code !== 404) {
-			console.error(`Erro ao buscar subpastas de ${folderPath}:`, error);
+			console.error(`Error getting subfolders from ${folderPath}:`, error);
 		}
 	}
 	foldersList.push(folderPath);
@@ -28,7 +28,7 @@ export async function deleteFolderResources(folderPath) {
 			await cloudinary.uploader.destroy(resource.public_id, { resource_type: resource.resource_type });
 		}
 	} catch (error) {
-		console.error(`Erro ao apagar arquivos da pasta ${folderPath}:`, error);
+		console.error(`Error deleting files from folder ${folderPath}:`, error);
 	}
 }
 
@@ -40,12 +40,11 @@ export async function deleteFolderRecursive(rootFolderPath) {
 		}
 		for (const folder of hierarchicalFolders) {
 			await cloudinary.api.delete_folder(folder);
-			console.log(`Pasta eliminada do Cloudinary: ${folder}`);
 		}
 
 		return true;
 	} catch (error) {
-		console.error(`Erro ao eliminar a pasta ${rootFolderPath} e suas subpastas:`, error);
+		console.error(`Error deleting folder ${rootFolderPath} and its subfolders:`, error);
 		throw error;
 	}
 }
