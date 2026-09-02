@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { isGuest } from '../middleware/auth.js';
 import { validationResult } from 'express-validator';
 import { fieldSignup } from '../validators/fieldSignup.js';
+import cloudinary from '../lib/cloudinary.js';
 
 const signupRouter = Router();
 
@@ -27,6 +28,15 @@ signupRouter.post('/', isGuest, fieldSignup, async (req, res, next) => {
 				lastName,
 			},
 		});
+		const homeUserFolder = user.id;
+		await cloudinary.api.create_folder(`${homeUserFolder}/`);
+		await prisma.folder.create({
+			data: {
+				name: `${homeUserFolder}/`,
+				userId: user.id
+			},
+		});
+		console.log('User created:', user);
 		res.redirect('/login');
 	} catch (error) {
 		next(error);
