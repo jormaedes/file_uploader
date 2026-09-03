@@ -225,5 +225,40 @@ homeUserRouter.post('/:username/folders/:folderId/uploadFile', upload.single('fi
 	}
 });
 
+homeUserRouter.post('/:username/folders/:folderId/deleteFile/:fileId', isAuthenticated, async (req, res) => {
+	try {
+		const { username, folderId } = req.params;
+		const fileId = req.params.fileId;
+		const userId = req.session.userId;
+		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
+		if (username !== userAuth.username) {
+			return res.status(403).send('Forbidden');
+		}
+		const pathToFolder = await getPathToFolder(folderId, username);
+		if (!pathToFolder) {
+			return res.status(404).send('Folder not found');
+		}
+		const file = await prisma.file.findFirst({
+			where: {
+				id: parseInt(fileId),
+				userId: userAuth.id,
+			},
+		});
+		if (!file) {
+			return res.status(404).send('File not found');
+		}
+		await cloudinary.uploader.destroy(file.cloudinaryId);
+		await prisma.file.delete({
+			where: {
+				id: parseInt(fileId),
+			},
+		});
+		return res.redirect(`/home/${username}/folders/${folderId}`);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send(`'Internal server error' ${error}`);
+	}
+});
+
 
 export default homeUserRouter;
