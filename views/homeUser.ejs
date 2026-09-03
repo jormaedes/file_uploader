@@ -62,13 +62,16 @@
 	}
 	%>
 
-	<div class="min-h-screen flex flex-col md:flex-row">
+	<div class="min-h-screen flex flex-col md:flex-row relative">
 
-		<!-- LEFT SIDEBAR -->
-		<aside class="w-full md:w-64 bg-white border-r border-slate-200/80 p-6 flex flex-col justify-between shrink-0">
+		<!-- MOBILE BACKDROP OVERLAY -->
+		<div id="sidebarBackdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
+
+		<!-- SIDEBAR (RESPONSIVE DRAWER ON MOBILE, FIXED SIDEBAR ON DESKTOP) -->
+		<aside id="mobileSidebar" class="fixed inset-y-0 left-0 w-72 bg-white z-50 p-6 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:static md:w-64 md:z-auto border-r border-slate-200/80 shrink-0">
 			<div>
-				<!-- Logo -->
-				<div class="flex items-center gap-3 mb-8">
+				<!-- Logo & Mobile Close Button -->
+				<div class="flex items-center justify-between mb-8">
 					<a href="/home/<%= user.username %>" class="flex items-center gap-2.5 group">
 						<div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
 							<i class="fa-solid fa-cloud text-lg"></i>
@@ -81,6 +84,11 @@
 							<span class="block text-[10px] text-slate-400 font-medium -mt-0.5">Armazenamento Rápido</span>
 						</div>
 					</a>
+
+					<!-- Mobile Close Drawer Button -->
+					<button id="closeMobileSidebarBtn" class="md:hidden text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer" title="Fechar Menu">
+						<i class="fa-solid fa-xmark text-lg"></i>
+					</button>
 				</div>
 
 				<!-- Primary Action Button: + Novo Envio -->
@@ -101,31 +109,31 @@
 							</a>
 
 							<!-- Fotos & Imagens -->
-							<button onclick="filterCategory('image')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+							<button onclick="filterCategory('image'); closeMobileSidebar();" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
 								<i class="fa-regular fa-image text-base w-5 text-center text-slate-400"></i>
 								<span>Fotos & Imagens</span>
 							</button>
 
 							<!-- Documentos -->
-							<button onclick="filterCategory('document')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+							<button onclick="filterCategory('document'); closeMobileSidebar();" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
 								<i class="fa-regular fa-file-lines text-base w-5 text-center text-slate-400"></i>
 								<span>Documentos</span>
 							</button>
 
 							<!-- Vídeos -->
-							<button onclick="filterCategory('video')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+							<button onclick="filterCategory('video'); closeMobileSidebar();" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
 								<i class="fa-solid fa-film text-base w-5 text-center text-slate-400"></i>
 								<span>Vídeos</span>
 							</button>
 
 							<!-- Áudios -->
-							<button onclick="filterCategory('audio')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+							<button onclick="filterCategory('audio'); closeMobileSidebar();" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
 								<i class="fa-solid fa-headphones text-base w-5 text-center text-slate-400"></i>
 								<span>Áudios</span>
 							</button>
 
 							<!-- Outros (Replaces Lixeira as requested) -->
-							<button onclick="filterCategory('other')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+							<button onclick="filterCategory('other'); closeMobileSidebar();" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
 								<i class="fa-solid fa-boxes-stacked text-base w-5 text-center text-slate-400"></i>
 								<span>Outros</span>
 							</button>
@@ -172,9 +180,25 @@
 		<div class="flex-grow flex flex-col min-w-0">
 			
 			<!-- TOP HEADER BAR -->
-			<header class="bg-white border-b border-slate-200/80 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 sticky top-0 z-30">
+			<header class="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-4 flex items-center justify-between gap-3 sticky top-0 z-30">
+				
+				<!-- Mobile Menu Toggle Button & Logo on Mobile -->
+				<div class="flex items-center gap-3">
+					<button id="openMobileSidebarBtn" class="md:hidden p-2 rounded-xl border border-slate-200 bg-white text-slate-700 hover:text-blue-600 hover:border-blue-300 transition-colors shrink-0 cursor-pointer" title="Abrir Menu">
+						<i class="fa-solid fa-bars text-base"></i>
+					</button>
+
+					<!-- Mobile Logo Icon -->
+					<a href="/home/<%= user.username %>" class="md:hidden flex items-center gap-2">
+						<div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs">
+							<i class="fa-solid fa-cloud text-sm"></i>
+						</div>
+						<span class="font-bold font-heading text-slate-900 text-base">JFLoader</span>
+					</a>
+				</div>
+
 				<!-- Search Input -->
-				<div class="w-full sm:max-w-md relative">
+				<div class="hidden sm:block flex-grow max-w-md relative">
 					<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
 						<i class="fa-solid fa-magnifying-glass text-sm"></i>
 					</div>
@@ -183,9 +207,9 @@
 				</div>
 
 				<!-- Header Controls -->
-				<div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+				<div class="flex items-center gap-2.5 justify-end">
 					<!-- Language Pill -->
-					<div class="flex items-center gap-1 bg-slate-100 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-600 border border-slate-200">
+					<div class="hidden sm:flex items-center gap-1 bg-slate-100 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-600 border border-slate-200">
 						<i class="fa-solid fa-globe text-slate-400 text-xs"></i>
 						<span>PT</span>
 					</div>
@@ -196,15 +220,15 @@
 					</button>
 
 					<!-- Enviar Arquivo Button -->
-					<button id="openUploadFileDialogHeader" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm flex items-center gap-2 transition-all cursor-pointer">
+					<button id="openUploadFileDialogHeader" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-all cursor-pointer">
 						<i class="fa-solid fa-cloud-arrow-up text-sm"></i>
-						<span>Enviar Arquivo</span>
+						<span class="hidden sm:inline">Enviar Arquivo</span>
 					</button>
 
 					<!-- User Profile Info -->
-					<div class="flex items-center gap-2.5 pl-2 border-l border-slate-200">
-						<img src="<%= user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="w-9 h-9 rounded-full object-cover border border-slate-300 shadow-xs" alt="User Profile">
-						<div class="hidden md:block text-left leading-tight">
+					<div class="flex items-center gap-2.5 pl-1.5 sm:pl-2 border-l border-slate-200">
+						<img src="<%= user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-slate-300 shadow-xs" alt="User Profile">
+						<div class="hidden lg:block text-left leading-tight">
 							<span class="text-xs font-bold text-slate-900 block"><%= user.firstName ? (user.firstName + ' ' + user.lastName) : user.username %></span>
 							<span class="text-[10px] text-slate-400 font-medium block">Plano Pessoal</span>
 						</div>
@@ -212,8 +236,19 @@
 				</div>
 			</header>
 
+			<!-- Mobile Search Input (Visible only on mobile below header) -->
+			<div class="p-4 bg-white border-b border-slate-200/80 sm:hidden">
+				<div class="relative">
+					<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+						<i class="fa-solid fa-magnifying-glass text-sm"></i>
+					</div>
+					<input type="text" id="searchInputMobile" onkeyup="searchFilesMobile()" placeholder="Pesquisar em Meus Arquivos..."
+						class="w-full pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 text-xs font-medium text-slate-800 outline-none transition-all">
+				</div>
+			</div>
+
 			<!-- DASHBOARD CONTENT BODY -->
-			<main class="p-6 sm:p-8 flex-grow">
+			<main class="p-4 sm:p-8 flex-grow">
 				<!-- Breadcrumb & Title Bar -->
 				<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
 					<div>
@@ -514,8 +549,28 @@
 		</div>
 	</dialog>
 
-	<!-- JAVASCRIPT DIALOG CONTROLS & FILTERING -->
+	<!-- JAVASCRIPT DIALOG CONTROLS, FILTERING & MOBILE DRAWER -->
 	<script>
+		// Mobile Sidebar Drawer Toggle Logic
+		const mobileSidebar = document.getElementById('mobileSidebar');
+		const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+		const openMobileSidebarBtn = document.getElementById('openMobileSidebarBtn');
+		const closeMobileSidebarBtn = document.getElementById('closeMobileSidebarBtn');
+
+		function openMobileSidebar() {
+			mobileSidebar.classList.remove('-translate-x-full');
+			sidebarBackdrop.classList.remove('hidden');
+		}
+
+		function closeMobileSidebar() {
+			mobileSidebar.classList.add('-translate-x-full');
+			sidebarBackdrop.classList.add('hidden');
+		}
+
+		if (openMobileSidebarBtn) openMobileSidebarBtn.addEventListener('click', openMobileSidebar);
+		if (closeMobileSidebarBtn) closeMobileSidebarBtn.addEventListener('click', closeMobileSidebar);
+		if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+
 		// Modal Dialog References
 		const createFolderDialog = document.getElementById('createFolderDialog');
 		const uploadFileDialog = document.getElementById('uploadFileDialog');
@@ -535,7 +590,10 @@
 		const openUploadFileDialogHeader = document.getElementById('openUploadFileDialogHeader');
 		const openUploadFileDialogEmpty = document.getElementById('openUploadFileDialogEmpty');
 
-		if (openUploadFileDialogSidebar) openUploadFileDialogSidebar.addEventListener('click', () => uploadFileDialog.showModal());
+		if (openUploadFileDialogSidebar) openUploadFileDialogSidebar.addEventListener('click', () => {
+			closeMobileSidebar();
+			uploadFileDialog.showModal();
+		});
 		if (openUploadFileDialogHeader) openUploadFileDialogHeader.addEventListener('click', () => uploadFileDialog.showModal());
 		if (openUploadFileDialogEmpty) openUploadFileDialogEmpty.addEventListener('click', () => uploadFileDialog.showModal());
 
@@ -556,9 +614,18 @@
 		};
 		document.getElementById('closeDeleteFileDialog').addEventListener('click', () => deleteFileDialog.close());
 
-		// Search Files Filter
+		// Search Files Filter (Desktop & Mobile)
 		function searchFiles() {
 			const query = document.getElementById('searchInput').value.toLowerCase();
+			filterRowsByQuery(query);
+		}
+
+		function searchFilesMobile() {
+			const query = document.getElementById('searchInputMobile').value.toLowerCase();
+			filterRowsByQuery(query);
+		}
+
+		function filterRowsByQuery(query) {
 			const rows = document.querySelectorAll('.file-row');
 			rows.forEach(row => {
 				const text = row.innerText.toLowerCase();
