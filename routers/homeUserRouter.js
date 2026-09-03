@@ -19,7 +19,7 @@ homeUserRouter.get('/:username', isAuthenticated, async (req, res) => {
 		const userId = req.session.userId;
 		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
 		if (username !== userAuth.username) {
-			return res.status(403).send('Forbidden');
+			return res.status(403).render('403', { url: req.originalUrl });
 		}
 		const currentFolder = await prisma.folder.findFirst({
 			where: {
@@ -28,7 +28,7 @@ homeUserRouter.get('/:username', isAuthenticated, async (req, res) => {
 			},
 		});
 		if (!currentFolder) {
-			return res.status(404).send('Folder not found');
+			return res.status(404).render('404', { url: req.originalUrl });
 		}
 		const folderChildren = await prisma.folder.findMany({
 			where: {
@@ -45,6 +45,7 @@ homeUserRouter.get('/:username', isAuthenticated, async (req, res) => {
 			currentFolder: currentFolder,
 			folderChildren: folderChildren,
 			files: files,
+			errorMessage: req.query.error || null,
 		});
 	} catch (error) {
 		console.log(error);
@@ -58,7 +59,7 @@ homeUserRouter.get('/:username/folders/:folderId', isAuthenticated, async (req, 
 		const userId = req.session.userId;
 		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
 		if (username !== userAuth.username) {
-			return res.status(403).send('Forbidden');
+			return res.status(403).render('403', { url: req.originalUrl });
 		}
 		const currentFolder = await prisma.folder.findFirst({
 			where: {
@@ -67,7 +68,7 @@ homeUserRouter.get('/:username/folders/:folderId', isAuthenticated, async (req, 
 			},
 		});
 		if (!currentFolder) {
-			return res.status(404).send('Folder not found');
+			return res.status(404).render('404', { url: req.originalUrl });
 		}
 		const folderChildren = await prisma.folder.findMany({
 			where: {
@@ -84,6 +85,7 @@ homeUserRouter.get('/:username/folders/:folderId', isAuthenticated, async (req, 
 			currentFolder: currentFolder,
 			folderChildren: folderChildren,
 			files: files,
+			errorMessage: req.query.error || null,
 		});
 	} catch (error) {
 		console.log(error);
@@ -114,11 +116,11 @@ homeUserRouter.post('/:username/folders/:folderId/createFolder', isAuthenticated
 		const userId = req.session.userId;
 		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
 		if (username !== userAuth.username) {
-			return res.status(403).send('Forbidden');
+			return res.status(403).render('403', { url: req.originalUrl });
 		}
 		const pathToFolder = await getPathToFolder(folderId, username);
 		if (!pathToFolder) {
-			return res.status(404).send('Folder not found');
+			return res.status(404).render('404', { url: req.originalUrl });
 		}
 		const isExistFolder = await prisma.folder.findFirst({
 			where: {
@@ -128,7 +130,7 @@ homeUserRouter.post('/:username/folders/:folderId/createFolder', isAuthenticated
 			},
 		});
 		if (isExistFolder) {
-			return res.status(400).send('Folder already exists');
+			return res.redirect(`/home/${username}/folders/${folderId}?error=Ja+existe+uma+pasta+com+o+nome+"${encodeURIComponent(folderName)}"+neste+diretorio.`);
 		}
 		await cloudinary.api.create_folder(`${pathToFolder}${folderName}`);
 		const currentFolder = await prisma.folder.findFirst({
@@ -137,7 +139,7 @@ homeUserRouter.post('/:username/folders/:folderId/createFolder', isAuthenticated
 			},
 		});
 		if (!currentFolder) {
-			return res.status(404).send('Folder not found');
+			return res.status(404).render('404', { url: req.originalUrl });
 		}
 		const newFolder = await prisma.folder.create({
 			data: {
@@ -159,7 +161,7 @@ homeUserRouter.get('/:username/folders/:folderId/delete', isAuthenticated, async
 		const userId = req.session.userId;
 		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
 		if (username !== userAuth.username) {
-			return res.status(403).send('Forbidden');
+			return res.status(403).render('403', { url: req.originalUrl });
 		}
 		const pathToFolder = await getPathToFolder(folderId, username);
 		const currentFolder = await prisma.folder.findFirst({
@@ -169,7 +171,7 @@ homeUserRouter.get('/:username/folders/:folderId/delete', isAuthenticated, async
 			},
 		});
 		if (!currentFolder) {
-			return res.status(404).send('Folder not found');
+			return res.status(404).render('404', { url: req.originalUrl });
 		}
 		await deleteFolderRecursive(`${pathToFolder}`);
 
@@ -191,11 +193,11 @@ homeUserRouter.post('/:username/folders/:folderId/uploadFile', upload.single('fi
 		const userId = req.session.userId;
 		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
 		if (username !== userAuth.username) {
-			return res.status(403).send('Forbidden');
+			return res.status(403).render('403', { url: req.originalUrl });
 		}
 		const pathToFolder = await getPathToFolder(folderId, username);
 		if (!pathToFolder) {
-			return res.status(404).send('Folder not found');
+			return res.status(404).render('404', { url: req.originalUrl });
 		}
 		const file = req.file;
 		if (!file) {
@@ -242,11 +244,11 @@ homeUserRouter.get('/:username/folders/:folderId/deleteFile/:fileId', isAuthenti
 		const userId = req.session.userId;
 		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
 		if (username !== userAuth.username) {
-			return res.status(403).send('Forbidden');
+			return res.status(403).render('403', { url: req.originalUrl });
 		}
 		const pathToFolder = await getPathToFolder(folderId, username);
 		if (!pathToFolder) {
-			return res.status(404).send('Folder not found');
+			return res.status(404).render('404', { url: req.originalUrl });
 		}
 		const file = await prisma.file.findFirst({
 			where: {
@@ -255,7 +257,7 @@ homeUserRouter.get('/:username/folders/:folderId/deleteFile/:fileId', isAuthenti
 			},
 		});
 		if (!file) {
-			return res.status(404).send('File not found');
+			return res.status(404).render('404', { url: req.originalUrl });
 		}
 		await cloudinary.uploader.destroy(file.cloudinaryId, { resource_type: file.type.split('/')[0] });
 		await prisma.file.delete({
