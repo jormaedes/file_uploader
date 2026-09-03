@@ -625,6 +625,9 @@
   .min-w-0 {
     min-width: 0px;
   }
+  .min-w-\[2\.5rem\] {
+    min-width: 2.5rem;
+  }
   .flex-1 {
     flex: 1;
   }
@@ -807,6 +810,12 @@
   }
   .rounded-3xl {
     border-radius: var(--radius-3xl);
+  }
+  .rounded-\[0\.7rem\] {
+    border-radius: 0.7rem;
+  }
+  .rounded-\[0\.9rem\] {
+    border-radius: 0.9rem;
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
@@ -1514,6 +1523,9 @@
   .text-\[11px\] {
     font-size: 11px;
   }
+  .text-\[12px\] {
+    font-size: 12px;
+  }
   .text-\[15px\] {
     font-size: 15px;
   }
@@ -1977,6 +1989,9 @@
     }
     .hover\:bg-\[\#256fe9\]:hover {
       background-color: #256fe9;
+    }
+    .hover\:bg-\[\#1249d8\]:hover {
+      background-color: #1249d8;
     }
     .hover\:bg-\[\#1852d5\]:hover {
       background-color: #1852d5;

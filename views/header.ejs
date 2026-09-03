@@ -1,12 +1,18 @@
-<header class="sticky top-0 z-50 border-b border-slate-200 bg-[#f4f4f4]">
+<header class="sticky top-0 z-50 border-b border-slate-200 bg-white">
 	<div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
 		<div class="flex h-20 items-center justify-between gap-4">
 			<div class="flex shrink-0 items-center gap-3">
-				<a href="/" class="flex items-center gap-3">
-					<div class="flex h-9 w-9 items-center justify-center rounded-md bg-[#1f2937] text-white shadow-sm">
-						<i class="fa-solid fa-cloud text-lg"></i>
+				<a href="/" class="inline-flex items-center gap-2.5 group">
+					<div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform">
+						<i class="fa-solid fa-cloud text-xl"></i>
 					</div>
-					<span class="text-[2rem] font-bold tracking-tight text-slate-900">JFLoader</span>
+					<div class="text-left">
+						<div class="flex items-center gap-1.5">
+							<span class="text-2xl font-bold font-heading text-slate-900 tracking-tight">JFLoader</span>
+							<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 uppercase">CLOUD</span>
+						</div>
+						<span class="block text-xs text-slate-400 font-medium -mt-0.5">Armazenamento Rápido</span>
+					</div>
 				</a>
 			</div>
 
@@ -26,14 +32,19 @@
 					</a>
 					<a href="/logout" class="hidden rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 sm:inline-flex">Sair</a>
 				<% } else { %>
-					<button type="button" class="hidden h-11 w-11 items-center justify-center rounded-full bg-[#2a2a2a] text-lg text-white transition hover:bg-[#1f1f1f] sm:flex" aria-label="Idioma">
-						<i class="fa-solid fa-globe"></i>
-					</button>
+					<div class="hidden items-center rounded-full border border-slate-300 bg-[#f3f4f6] p-1 shadow-sm sm:flex">
+						<button type="button" class="flex h-9 min-w-[2.5rem] items-center justify-center rounded-full bg-white px-3 text-[10px] font-semibold text-slate-800 shadow-sm">
+							PT
+						</button>
+						<button type="button" class="flex h-9 min-w-[2.5rem] items-center justify-center rounded-[0.7rem] px-3 text-[10px] font-semibold text-slate-500 transition hover:text-slate-800">
+							EN
+						</button>
+					</div>
 					<div class="hidden items-center gap-3 sm:flex">
-						<a href="/login" class="inline-flex items-center justify-center rounded-full bg-[#2a2a2a] px-6 py-3 text-[1.05rem] font-semibold text-white shadow-sm transition hover:bg-[#1f1f1f]">
+						<a href="/login" class="inline-flex items-center justify-center rounded-[0.9rem] border border-slate-300 bg-[#f3f4f6] px-6 py-3 text-[1.05rem] font-semibold text-slate-800 shadow-sm transition hover:bg-slate-200">
 							Login
 						</a>
-						<a href="/signup" class="inline-flex items-center justify-center rounded-full bg-[#1856f3] px-6 py-3 text-[1.05rem] font-semibold text-white shadow-sm transition hover:bg-[#4b97f6]">
+						<a href="/signup" class="inline-flex items-center justify-center rounded-[0.9rem] bg-[#1856f3] px-6 py-3 text-[1.05rem] font-semibold text-white shadow-sm transition hover:bg-[#1249d8]">
 							Cadastrar
 						</a>
 					</div>
@@ -50,8 +61,8 @@
 						<a href="#tech" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Tecnologia</a>
 						<a href="#how-it-works" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Como funciona</a>
 						<div class="mt-2 border-t border-slate-200 pt-2">
-							<a href="/login" class="block rounded-xl bg-[#2a2a2a] px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-[#1f1f1f]">Login</a>
-							<a href="/signup" class="mt-2 block rounded-xl bg-[#2a2a2a] px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-[#1f1f1f]">Cadastrar</a>
+							<a href="/login" class="block rounded-[0.9rem] border border-slate-300 bg-[#f3f4f6] px-3 py-2 text-center text-sm font-semibold text-slate-800 transition hover:bg-slate-200">Login</a>
+							<a href="/signup" class="mt-2 block rounded-[0.9rem] bg-[#1856f3] px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-[#1249d8]">Cadastrar</a>
 						</div>
 					</nav>
 				</details>
