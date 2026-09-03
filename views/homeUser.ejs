@@ -1,115 +1,597 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" class="h-full bg-slate-50">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>home | <%= user.username %>
-	</title>
+	<title>Home - <%= user.username %> | JFLoader</title>
+
+	<!-- Google Fonts: Outfit & Inter -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+	<!-- FontAwesome Icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+	<!-- Tailwind Compiled CSS -->
+	<link href="/css/output.css" rel="stylesheet">
 </head>
 
-<body>
-	<p>Welcome, <%= user.username %>
-	</p>
+<body class="h-full font-sans text-slate-800 antialiased selection:bg-blue-500 selection:text-white bg-slate-50">
 
-	<a href="/logout">Logout</a>
+	<%
+	// Inline Helper Functions for Date & Size Formatting
+	function formatDate(dateString) {
+		if (!dateString) return 'Recente';
+		const date = new Date(dateString);
+		if (isNaN(date.getTime())) return 'Recente';
+		
+		const now = new Date();
+		const isToday = date.toDateString() === now.toDateString();
+		
+		if (isToday) {
+			return `Hoje, ${date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+		}
+		
+		const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+		const day = date.getDate().toString().padStart(2, '0');
+		const month = months[date.getMonth()];
+		const year = date.getFullYear();
+		
+		return `${day} de ${month}, ${year}`;
+	}
 
-	<p>Current folder: <%= currentFolder.name %>
-	</p>
+	function formatSize(bytes) {
+		if (!bytes || bytes === 0) return '0 B';
+		const k = 1024;
+		const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+		const i = Math.floor(Math.log(bytes) / Math.log(k));
+		return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+	}
 
-	<div>
-		<dialog id="createFolderDialog">
-			<summary>Create new folder</summary>
-			<form action="<%= '/home/' + user.username + '/folders/' + currentFolder.id + '/createFolder' %>"
-				method="post">
-				<input type="text" name="folderName" placeholder="Folder name" required>
-				<button type="submit">Create folder</button>
-			</form>
-		</dialog>
-		<dialog id="uploadFileDialog">
-			<summary>Add a new file</summary>
-			<form action="<%= '/home/' + user.username + '/folders/' + currentFolder.id + '/uploadFile' %>"
-				method="post" enctype="multipart/form-data">
-				<input type="file" name="file" required>
-				<button type="submit">Add file</button>
-			</form>
-		</dialog>
+	function getFileTypeBadge(type) {
+		if (!type) return { label: 'FILE', bg: 'bg-slate-100 text-slate-700', icon: 'fa-file text-slate-500' };
+		const t = type.toLowerCase();
+		if (t.includes('pdf')) return { label: 'PDF', bg: 'bg-rose-100 text-rose-700', icon: 'fa-file-pdf text-rose-500' };
+		if (t.includes('image') || t.includes('png') || t.includes('jpg') || t.includes('jpeg')) return { label: 'PNG', bg: 'bg-blue-100 text-blue-700', icon: 'fa-file-image text-blue-500' };
+		if (t.includes('video') || t.includes('mp4')) return { label: 'MP4', bg: 'bg-purple-100 text-purple-700', icon: 'fa-file-video text-purple-500' };
+		if (t.includes('css') || t.includes('javascript') || t.includes('html') || t.includes('json')) return { label: 'CSS', bg: 'bg-cyan-100 text-cyan-700', icon: 'fa-file-code text-cyan-500' };
+		if (t.includes('zip') || t.includes('rar') || t.includes('compressed')) return { label: 'ZIP', bg: 'bg-amber-100 text-amber-700', icon: 'fa-file-zipper text-amber-500' };
+		return { label: 'DOC', bg: 'bg-slate-100 text-slate-700', icon: 'fa-file text-slate-500' };
+	}
+	%>
 
+	<div class="min-h-screen flex flex-col md:flex-row">
 
+		<!-- LEFT SIDEBAR -->
+		<aside class="w-full md:w-64 bg-white border-r border-slate-200/80 p-6 flex flex-col justify-between shrink-0">
+			<div>
+				<!-- Logo -->
+				<div class="flex items-center gap-3 mb-8">
+					<a href="/home/<%= user.username %>" class="flex items-center gap-2.5 group">
+						<div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+							<i class="fa-solid fa-cloud text-lg"></i>
+						</div>
+						<div>
+							<div class="flex items-center gap-1.5">
+								<span class="text-xl font-bold font-heading text-slate-900 tracking-tight">JFLoader</span>
+								<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 uppercase">CLOUD</span>
+							</div>
+							<span class="block text-[10px] text-slate-400 font-medium -mt-0.5">Armazenamento Rápido</span>
+						</div>
+					</a>
+				</div>
+
+				<!-- Primary Action Button: + Novo Envio -->
+				<button id="openUploadFileDialogSidebar" class="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-500/25 hover:shadow-blue-500/35 transition-all flex items-center justify-center gap-2 mb-8 cursor-pointer">
+					<i class="fa-solid fa-plus text-sm"></i>
+					<span>Novo Envio</span>
+				</button>
+
+				<!-- Navigation Section -->
+				<div class="space-y-6">
+					<div>
+						<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-3 px-3">NAVEGAÇÃO</span>
+						<nav class="space-y-1">
+							<!-- Home (Root directory) -->
+							<a href="/home/<%= user.username %>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-blue-50 text-blue-600 transition-colors">
+								<i class="fa-solid fa-house text-base w-5 text-center"></i>
+								<span>Home</span>
+							</a>
+
+							<!-- Fotos & Imagens -->
+							<button onclick="filterCategory('image')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+								<i class="fa-regular fa-image text-base w-5 text-center text-slate-400"></i>
+								<span>Fotos & Imagens</span>
+							</button>
+
+							<!-- Documentos -->
+							<button onclick="filterCategory('document')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+								<i class="fa-regular fa-file-lines text-base w-5 text-center text-slate-400"></i>
+								<span>Documentos</span>
+							</button>
+
+							<!-- Vídeos -->
+							<button onclick="filterCategory('video')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+								<i class="fa-solid fa-film text-base w-5 text-center text-slate-400"></i>
+								<span>Vídeos</span>
+							</button>
+
+							<!-- Áudios -->
+							<button onclick="filterCategory('audio')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+								<i class="fa-solid fa-headphones text-base w-5 text-center text-slate-400"></i>
+								<span>Áudios</span>
+							</button>
+
+							<!-- Outros (Replaces Lixeira as requested) -->
+							<button onclick="filterCategory('other')" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+								<i class="fa-solid fa-boxes-stacked text-base w-5 text-center text-slate-400"></i>
+								<span>Outros</span>
+							</button>
+						</nav>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sidebar Bottom -->
+			<div class="mt-8 pt-6 border-t border-slate-100 space-y-6">
+				<!-- Storage Meter Box -->
+				<div class="bg-blue-50/70 border border-blue-100 rounded-2xl p-4">
+					<div class="flex items-center justify-between text-xs font-semibold text-slate-700 mb-2">
+						<span class="flex items-center gap-1.5">
+							<i class="fa-solid fa-cloud text-blue-600 text-xs"></i>
+							Armazenamento
+						</span>
+						<span class="text-blue-600 font-bold text-xs">24%</span>
+					</div>
+					<div class="w-full bg-blue-200/60 h-2 rounded-full overflow-hidden mb-2">
+						<div class="bg-blue-600 h-full w-1/4 rounded-full"></div>
+					</div>
+					<div class="flex items-center justify-between text-[11px]">
+						<span class="text-slate-500">2.4 GB de 10 GB</span>
+						<a href="#" class="text-blue-600 font-bold hover:underline">Obter mais</a>
+					</div>
+				</div>
+
+				<!-- Settings & Logout -->
+				<div class="space-y-1">
+					<a href="#" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-colors">
+						<i class="fa-solid fa-gear text-slate-400"></i>
+						<span>Configurações</span>
+					</a>
+					<a href="/logout" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-rose-50 hover:text-rose-600 transition-colors">
+						<i class="fa-solid fa-right-from-bracket text-slate-400"></i>
+						<span>Sair da conta</span>
+					</a>
+				</div>
+			</div>
+		</aside>
+
+		<!-- MAIN CONTENT AREA -->
+		<div class="flex-grow flex flex-col min-w-0">
+			
+			<!-- TOP HEADER BAR -->
+			<header class="bg-white border-b border-slate-200/80 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 sticky top-0 z-30">
+				<!-- Search Input -->
+				<div class="w-full sm:max-w-md relative">
+					<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+						<i class="fa-solid fa-magnifying-glass text-sm"></i>
+					</div>
+					<input type="text" id="searchInput" onkeyup="searchFiles()" placeholder="Pesquisar em Meus Arquivos..."
+						class="w-full pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 text-xs font-medium text-slate-800 outline-none transition-all">
+				</div>
+
+				<!-- Header Controls -->
+				<div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+					<!-- Language Pill -->
+					<div class="flex items-center gap-1 bg-slate-100 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-600 border border-slate-200">
+						<i class="fa-solid fa-globe text-slate-400 text-xs"></i>
+						<span>PT</span>
+					</div>
+
+					<!-- Theme Switcher Icon -->
+					<button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-amber-500 hover:bg-slate-200 transition-colors" title="Modo Claro">
+						<i class="fa-solid fa-sun text-sm"></i>
+					</button>
+
+					<!-- Enviar Arquivo Button -->
+					<button id="openUploadFileDialogHeader" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm flex items-center gap-2 transition-all cursor-pointer">
+						<i class="fa-solid fa-cloud-arrow-up text-sm"></i>
+						<span>Enviar Arquivo</span>
+					</button>
+
+					<!-- User Profile Info -->
+					<div class="flex items-center gap-2.5 pl-2 border-l border-slate-200">
+						<img src="<%= user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="w-9 h-9 rounded-full object-cover border border-slate-300 shadow-xs" alt="User Profile">
+						<div class="hidden md:block text-left leading-tight">
+							<span class="text-xs font-bold text-slate-900 block"><%= user.firstName ? (user.firstName + ' ' + user.lastName) : user.username %></span>
+							<span class="text-[10px] text-slate-400 font-medium block">Plano Pessoal</span>
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<!-- DASHBOARD CONTENT BODY -->
+			<main class="p-6 sm:p-8 flex-grow">
+				<!-- Breadcrumb & Title Bar -->
+				<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+					<div>
+						<!-- Breadcrumbs -->
+						<nav class="flex items-center gap-2 text-xs text-slate-400 font-medium mb-1">
+							<a href="/home/<%= user.username %>" class="hover:text-blue-600 transition-colors">Início</a>
+							<span>/</span>
+							<span class="text-slate-600 font-semibold"><%= currentFolder.name === 'home' || !currentFolder.parentId ? 'Home' : currentFolder.name %></span>
+						</nav>
+						<!-- Title -->
+						<h1 class="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 tracking-tight">
+							<%= currentFolder.name === 'home' || !currentFolder.parentId ? 'Home' : currentFolder.name %>
+						</h1>
+					</div>
+
+					<!-- Filter & View Controls -->
+					<div class="flex items-center gap-2">
+						<button class="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2 shadow-xs transition-colors">
+							<i class="fa-solid fa-sliders text-slate-400"></i>
+							<span>Filtrar</span>
+						</button>
+						<div class="flex items-center bg-slate-200/60 p-1 rounded-xl gap-1">
+							<button class="p-1.5 rounded-lg bg-white text-blue-600 shadow-xs" title="Modo Lista">
+								<i class="fa-solid fa-list text-xs"></i>
+							</button>
+							<button class="p-1.5 rounded-lg text-slate-500 hover:text-slate-800" title="Modo Grid">
+								<i class="fa-solid fa-border-all text-xs"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- PASTAS SECTION -->
+				<section class="mb-10">
+					<div class="flex items-center justify-between mb-4">
+						<span class="text-xs font-bold uppercase tracking-wider text-slate-400 font-heading">PASTAS</span>
+						<button id="openCreateFolderDialogBtn" class="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 transition-colors cursor-pointer">
+							<i class="fa-solid fa-folder-plus text-sm"></i>
+							<span>Nova Pasta</span>
+						</button>
+					</div>
+
+					<!-- Folders Grid -->
+					<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+						<!-- Back to Parent Folder if inside subfolder -->
+						<% if (currentFolder.parentId) { %>
+							<a href="/home/<%= user.username %>/folders/<%= currentFolder.parentId %>" class="bg-slate-100 hover:bg-slate-200/80 rounded-2xl p-4 border border-slate-200/80 flex items-center gap-3 transition-all group">
+								<div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-600 shadow-xs">
+									<i class="fa-solid fa-arrow-left text-base"></i>
+								</div>
+								<div>
+									<h4 class="text-xs font-bold text-slate-800">.. Voltar</h4>
+									<p class="text-[11px] text-slate-500">Pasta anterior</p>
+								</div>
+							</a>
+						<% } %>
+
+						<% if (folderChildren && folderChildren.length > 0) { %>
+							<% folderChildren.forEach(folder => { %>
+								<div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-blue-300 transition-all flex items-center justify-between group">
+									<a href="/home/<%= user.username %>/folders/<%= folder.id %>" class="flex items-center gap-3.5 flex-grow min-w-0">
+										<div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 shrink-0 group-hover:scale-105 transition-transform">
+											<i class="fa-solid fa-folder text-lg"></i>
+										</div>
+										<div class="min-w-0">
+											<h4 class="text-xs font-bold text-slate-800 truncate hover:text-blue-600 transition-colors"><%= folder.name %></h4>
+											<p class="text-[11px] text-slate-400">Pasta do Usuário</p>
+										</div>
+									</a>
+									<button onclick="openConfirmDeleteDialog('<%= folder.id %>', '<%= folder.name %>')" class="p-2 text-slate-400 hover:text-rose-600 transition-colors cursor-pointer" title="Excluir Pasta">
+										<i class="fa-solid fa-trash-can text-xs"></i>
+									</button>
+								</div>
+							<% }) %>
+						<% } else if (!currentFolder.parentId) { %>
+							<div class="col-span-full bg-white rounded-2xl p-6 border border-dashed border-slate-200 text-center text-slate-400 text-xs font-medium">
+								Nenhuma pasta criada ainda. Clique em "+ Nova Pasta" para organizar seus arquivos.
+							</div>
+						<% } %>
+					</div>
+				</section>
+
+				<!-- ARQUIVOS RECENTES / LISTA DE ARQUIVOS SECTION -->
+				<section>
+					<div class="flex items-center justify-between mb-4">
+						<div>
+							<h3 class="text-sm font-bold font-heading text-slate-900">Arquivos Recentes</h3>
+							<p class="text-xs text-slate-400 font-normal">Gerencie, baixe ou compartilhe seus arquivos armazenados</p>
+						</div>
+						<span class="text-xs font-semibold bg-slate-100 text-slate-600 px-3 py-1 rounded-full border border-slate-200">
+							<%= files ? files.length : 0 %> itens exibidos
+						</span>
+					</div>
+
+					<!-- Files Table Container -->
+					<div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+						<div class="overflow-x-auto">
+							<table class="w-full text-left border-collapse">
+								<thead>
+									<tr class="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+										<th class="py-3.5 px-6">NOME DO ARQUIVO</th>
+										<th class="py-3.5 px-4">TIPO</th>
+										<th class="py-3.5 px-4">MODIFICADO</th>
+										<th class="py-3.5 px-4">TAMANHO</th>
+										<th class="py-3.5 px-6 text-right">AÇÕES</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-slate-100 text-xs" id="filesTableBody">
+									<% if (files && files.length > 0) { %>
+										<% files.forEach(file => { %>
+											<% const badgeInfo = getFileTypeBadge(file.type); %>
+											<tr class="hover:bg-slate-50/80 transition-colors file-row" data-file-type="<%= file.type %>">
+												<!-- File Name & Icon -->
+												<td class="py-4 px-6 font-semibold text-slate-800">
+													<div class="flex items-center gap-3">
+														<div class="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0">
+															<i class="fa-solid <%= badgeInfo.icon %> text-base"></i>
+														</div>
+														<div class="min-w-0">
+															<span class="block text-xs font-bold text-slate-800 truncate"><%= file.name %></span>
+															<span class="block text-[10px] text-slate-400 font-normal truncate"><%= file.type %></span>
+														</div>
+													</div>
+												</td>
+
+												<!-- Type Pill -->
+												<td class="py-4 px-4">
+													<span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase <%= badgeInfo.bg %>">
+														<%= badgeInfo.label %>
+													</span>
+												</td>
+
+												<!-- Formatted Date -->
+												<td class="py-4 px-4 text-slate-600 font-medium whitespace-nowrap">
+													<%= formatDate(file.uploadedAt || file.createdAt) %>
+												</td>
+
+												<!-- Formatted Size -->
+												<td class="py-4 px-4 text-slate-600 font-medium whitespace-nowrap">
+													<%= formatSize(file.size) %>
+												</td>
+
+												<!-- Actions -->
+												<td class="py-4 px-6 text-right whitespace-nowrap">
+													<div class="flex items-center justify-end gap-3 text-slate-400">
+														<!-- Download -->
+														<a href="<%= file.url %>" target="_blank" download="<%= file.name %>" class="hover:text-blue-600 transition-colors p-1" title="Download">
+															<i class="fa-solid fa-download text-sm"></i>
+														</a>
+
+														<!-- Share Link -->
+														<button onclick="navigator.clipboard.writeText('<%= file.url %>'); alert('Link do arquivo copiado!');" class="hover:text-blue-600 transition-colors p-1 cursor-pointer" title="Compartilhar Link">
+															<i class="fa-solid fa-share-nodes text-sm"></i>
+														</button>
+
+														<!-- Delete -->
+														<button onclick="openDeleteFileDialog('<%= file.id %>')" class="hover:text-rose-600 transition-colors p-1 cursor-pointer" title="Excluir Arquivo">
+															<i class="fa-solid fa-trash-can text-sm"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+										<% }) %>
+									<% } else { %>
+										<tr>
+											<td colspan="5" class="py-12 text-center text-slate-400 font-medium">
+												<div class="max-w-xs mx-auto text-center">
+													<i class="fa-solid fa-cloud-arrow-up text-3xl text-slate-300 mb-3 block"></i>
+													<p class="text-xs">Nenhum arquivo nesta pasta.</p>
+													<button id="openUploadFileDialogEmpty" class="mt-3 text-xs font-bold text-blue-600 hover:underline cursor-pointer">
+														Faça upload do seu primeiro arquivo
+													</button>
+												</div>
+											</td>
+										</tr>
+									<% } %>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+			</main>
+		</div>
 	</div>
 
-	<div>
-		<button id="openCreateFolderDialog">New folder</button>
-		<button id="openUploadFileDialog">Upload a file</button>
-	</div>
+	<!-- DIALOG MODALS -->
 
-	<dialog id="confirmDeleteDialog">
-		<p>Are you sure you want to delete this folder?</p>
-		<a id="confirmDeleteLink" href="#">
-			Delete
-		</a>
-		<button id="closeConfirmDeleteDialog">Cancel</button>
+	<!-- Create Folder Modal -->
+	<dialog id="createFolderDialog" class="rounded-3xl p-0 shadow-2xl backdrop:bg-slate-900/40 backdrop:backdrop-blur-xs max-w-md w-full border border-slate-100">
+		<div class="p-6 sm:p-8">
+			<div class="flex items-center justify-between mb-6">
+				<div class="flex items-center gap-3">
+					<div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
+						<i class="fa-solid fa-folder-plus text-lg"></i>
+					</div>
+					<div>
+						<h3 class="text-lg font-bold font-heading text-slate-900">Nova Pasta</h3>
+						<p class="text-xs text-slate-500">Digite o nome da nova pasta</p>
+					</div>
+				</div>
+				<button id="closeCreateFolderDialog" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+					<i class="fa-solid fa-xmark text-lg"></i>
+				</button>
+			</div>
+
+			<form action="<%= '/home/' + user.username + '/folders/' + currentFolder.id + '/createFolder' %>" method="post" class="space-y-4">
+				<div>
+					<label for="folderName" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nome da Pasta</label>
+					<input type="text" id="folderName" name="folderName" placeholder="Ex: Documentos 2026" required
+						class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none">
+				</div>
+				<div class="flex items-center justify-end gap-3 pt-2">
+					<button type="button" id="cancelCreateFolderDialog" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 cursor-pointer">
+						Cancelar
+					</button>
+					<button type="submit" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md cursor-pointer">
+						Criar Pasta
+					</button>
+				</div>
+			</form>
+		</div>
 	</dialog>
 
-	<dialog id="deleteFileDialog">
-		<summary>Are you sure you want to delete this file?</summary>
-		<a id="confirmDeleteLink" href="/home/<%= user.username %>/folders/<%= currentFolder.id %>/deleteFile/">
-			Delete
-		</a>
-		<button type="button" id="closeDeleteFileDialog">Cancel</button>
+	<!-- Upload File Modal -->
+	<dialog id="uploadFileDialog" class="rounded-3xl p-0 shadow-2xl backdrop:bg-slate-900/40 backdrop:backdrop-blur-xs max-w-md w-full border border-slate-100">
+		<div class="p-6 sm:p-8">
+			<div class="flex items-center justify-between mb-6">
+				<div class="flex items-center gap-3">
+					<div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+						<i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+					</div>
+					<div>
+						<h3 class="text-lg font-bold font-heading text-slate-900">Enviar Arquivo</h3>
+						<p class="text-xs text-slate-500">Selecione um arquivo para upload</p>
+					</div>
+				</div>
+				<button id="closeUploadFileDialog" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+					<i class="fa-solid fa-xmark text-lg"></i>
+				</button>
+			</div>
+
+			<form action="<%= '/home/' + user.username + '/folders/' + currentFolder.id + '/uploadFile' %>" method="post" enctype="multipart/form-data" class="space-y-4">
+				<div class="border-2 border-dashed border-blue-200 rounded-2xl p-6 text-center bg-blue-50/50 hover:bg-blue-50 transition-colors">
+					<i class="fa-solid fa-file-arrow-up text-3xl text-blue-500 mb-2 block"></i>
+					<label for="fileInput" class="block text-xs font-bold text-blue-600 hover:underline cursor-pointer mb-1">
+						Escolha um arquivo do seu dispositivo
+					</label>
+					<span class="text-[11px] text-slate-400 block">PDF, Imagens, Vídeos, Documentos (Máx. 100 MB)</span>
+					<input type="file" id="fileInput" name="file" required class="mt-4 text-xs text-slate-500 w-full file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200">
+				</div>
+				<div class="flex items-center justify-end gap-3 pt-2">
+					<button type="button" id="cancelUploadFileDialog" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 cursor-pointer">
+						Cancelar
+					</button>
+					<button type="submit" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md cursor-pointer">
+						Iniciar Envio
+					</button>
+				</div>
+			</form>
+		</div>
 	</dialog>
 
-	<p>Your folders:</p>
-	<ul>
-		<% if (currentFolder.parentId) { %>
-			<li>
-				<a href="<%= '/home/' + user.username + '/folders/' + currentFolder.parentId %>">
-					..
+	<!-- Confirm Delete Folder Modal -->
+	<dialog id="confirmDeleteDialog" class="rounded-3xl p-0 shadow-2xl backdrop:bg-slate-900/40 backdrop:backdrop-blur-xs max-w-md w-full border border-slate-100">
+		<div class="p-6 sm:p-8 text-center">
+			<div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4">
+				<i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+			</div>
+			<h3 class="text-lg font-bold font-heading text-slate-900 mb-2">Excluir Pasta?</h3>
+			<p class="text-xs text-slate-500 mb-6">Tem certeza que deseja excluir esta pasta e todos os seus arquivos contidos? Esta ação não pode ser desfeita.</p>
+			<div class="flex items-center justify-center gap-3">
+				<button id="closeConfirmDeleteDialog" class="px-5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 cursor-pointer">
+					Cancelar
+				</button>
+				<a id="confirmDeleteFolderLink" href="#" class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-md cursor-pointer">
+					Sim, Excluir Pasta
 				</a>
-			</li>
-			<% } %>
-				<% folderChildren.forEach(folder=> { %>
-					<%- include('listContent', { type: 'folder' , folder: folder, user: user }) %>
-						<% }) %>
-	</ul>
-	<p>Your files:</p>
-	<ul>
-		<% files.forEach(file=> { %>
-			<%- include('listContent', { type: 'file' , file: file, user: user }) %>
-				<% }) %>
-	</ul>
+			</div>
+		</div>
+	</dialog>
 
+	<!-- Confirm Delete File Modal -->
+	<dialog id="deleteFileDialog" class="rounded-3xl p-0 shadow-2xl backdrop:bg-slate-900/40 backdrop:backdrop-blur-xs max-w-md w-full border border-slate-100">
+		<div class="p-6 sm:p-8 text-center">
+			<div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4">
+				<i class="fa-solid fa-file-circle-xmark text-2xl"></i>
+			</div>
+			<h3 class="text-lg font-bold font-heading text-slate-900 mb-2">Excluir Arquivo?</h3>
+			<p class="text-xs text-slate-500 mb-6">Tem certeza que deseja remover este arquivo permanentemente do seu armazenamento?</p>
+			<div class="flex items-center justify-center gap-3">
+				<button id="closeDeleteFileDialog" class="px-5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 cursor-pointer">
+					Cancelar
+				</button>
+				<a id="confirmDeleteFileLink" href="#" class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-md cursor-pointer">
+					Sim, Excluir Arquivo
+				</a>
+			</div>
+		</div>
+	</dialog>
+
+	<!-- JAVASCRIPT DIALOG CONTROLS & FILTERING -->
 	<script>
+		// Modal Dialog References
 		const createFolderDialog = document.getElementById('createFolderDialog');
 		const uploadFileDialog = document.getElementById('uploadFileDialog');
-		const openCreateFolderDialog = document.getElementById('openCreateFolderDialog');
-		const openUploadFileDialog = document.getElementById('openUploadFileDialog');
-		openCreateFolderDialog.addEventListener('click', () => {
-			createFolderDialog.showModal();
-		});
-		openUploadFileDialog.addEventListener('click', () => {
-			uploadFileDialog.showModal();
-		});
-
 		const confirmDeleteDialog = document.getElementById('confirmDeleteDialog');
-		const closeConfirmDeleteDialog = document.getElementById('closeConfirmDeleteDialog');
+		const deleteFileDialog = document.getElementById('deleteFileDialog');
+
+		// Open Create Folder Modals
+		const openCreateFolderDialogBtn = document.getElementById('openCreateFolderDialogBtn');
+		if (openCreateFolderDialogBtn) {
+			openCreateFolderDialogBtn.addEventListener('click', () => createFolderDialog.showModal());
+		}
+		document.getElementById('closeCreateFolderDialog').addEventListener('click', () => createFolderDialog.close());
+		document.getElementById('cancelCreateFolderDialog').addEventListener('click', () => createFolderDialog.close());
+
+		// Open Upload File Modals
+		const openUploadFileDialogSidebar = document.getElementById('openUploadFileDialogSidebar');
+		const openUploadFileDialogHeader = document.getElementById('openUploadFileDialogHeader');
+		const openUploadFileDialogEmpty = document.getElementById('openUploadFileDialogEmpty');
+
+		if (openUploadFileDialogSidebar) openUploadFileDialogSidebar.addEventListener('click', () => uploadFileDialog.showModal());
+		if (openUploadFileDialogHeader) openUploadFileDialogHeader.addEventListener('click', () => uploadFileDialog.showModal());
+		if (openUploadFileDialogEmpty) openUploadFileDialogEmpty.addEventListener('click', () => uploadFileDialog.showModal());
+
+		document.getElementById('closeUploadFileDialog').addEventListener('click', () => uploadFileDialog.close());
+		document.getElementById('cancelUploadFileDialog').addEventListener('click', () => uploadFileDialog.close());
+
+		// Confirm Delete Folder Handler
 		const openConfirmDeleteDialog = (folderId, folderName) => {
 			confirmDeleteDialog.showModal();
-			confirmDeleteDialog.querySelector('a').href = `/home/<%= user.username %>/folders/${folderId}/delete`;
+			document.getElementById('confirmDeleteFolderLink').href = `/home/<%= user.username %>/folders/${folderId}/delete`;
 		};
-		closeConfirmDeleteDialog.addEventListener('click', () => {
-			confirmDeleteDialog.close();
-		});
+		document.getElementById('closeConfirmDeleteDialog').addEventListener('click', () => confirmDeleteDialog.close());
 
-		const deleteFileDialog = document.getElementById('deleteFileDialog');
-		const closeDeleteFileDialog = document.getElementById('closeDeleteFileDialog');
+		// Confirm Delete File Handler
 		const openDeleteFileDialog = (fileId) => {
 			deleteFileDialog.showModal();
-			deleteFileDialog.querySelector('a').href = `/home/<%= user.username %>/folders/<%= currentFolder.id %>/deleteFile/${fileId}`;
+			document.getElementById('confirmDeleteFileLink').href = `/home/<%= user.username %>/folders/<%= currentFolder.id %>/deleteFile/${fileId}`;
 		};
-		closeDeleteFileDialog.addEventListener('click', () => {
-			deleteFileDialog.close();
-		});
+		document.getElementById('closeDeleteFileDialog').addEventListener('click', () => deleteFileDialog.close());
+
+		// Search Files Filter
+		function searchFiles() {
+			const query = document.getElementById('searchInput').value.toLowerCase();
+			const rows = document.querySelectorAll('.file-row');
+			rows.forEach(row => {
+				const text = row.innerText.toLowerCase();
+				if (text.includes(query)) {
+					row.style.display = '';
+				} else {
+					row.style.display = 'none';
+				}
+			});
+		}
+
+		// Category Filtering
+		function filterCategory(category) {
+			const rows = document.querySelectorAll('.file-row');
+			rows.forEach(row => {
+				const fileType = (row.getAttribute('data-file-type') || '').toLowerCase();
+				if (category === 'all') {
+					row.style.display = '';
+				} else if (category === 'image' && (fileType.includes('image') || fileType.includes('png') || fileType.includes('jpg') || fileType.includes('jpeg'))) {
+					row.style.display = '';
+				} else if (category === 'document' && (fileType.includes('pdf') || fileType.includes('doc') || fileType.includes('text'))) {
+					row.style.display = '';
+				} else if (category === 'video' && (fileType.includes('video') || fileType.includes('mp4'))) {
+					row.style.display = '';
+				} else if (category === 'audio' && (fileType.includes('audio') || fileType.includes('mp3') || fileType.includes('wav'))) {
+					row.style.display = '';
+				} else if (category === 'other' && !fileType.includes('image') && !fileType.includes('pdf') && !fileType.includes('video') && !fileType.includes('audio')) {
+					row.style.display = '';
+				} else {
+					row.style.display = 'none';
+				}
+			});
+		}
 	</script>
 </body>
 
