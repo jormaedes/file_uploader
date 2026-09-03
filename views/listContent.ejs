@@ -7,7 +7,8 @@
 			<button onclick="openConfirmDeleteDialog('<%= folder.id %>', '<%= folder.name %>')">Delete</button>
 		</div>
 		<% } else if (type==='file' ) { %>
-			<div>
+
+			<div id="file-<%= file.cloudinaryId %>">
 				<div>
 					<%= file.name %>
 				</div>
@@ -21,7 +22,8 @@
 					<%= file.size %>
 				</div>
 				<a href="<%= file.url %>" download="<%= file.name %>">Download</a>
-				<button onclick="openDeleteFileDialog('<%= file.id %>', '<%= file.name %>')">Delete</button>
+				<button onclick="openDeleteFileDialog('<%= file.id %>')">Delete</button>
 			</div>
 			<% } %>
+
 </div>
