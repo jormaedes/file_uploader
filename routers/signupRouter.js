@@ -38,7 +38,10 @@ signupRouter.post('/', isGuest, fieldSignup, async (req, res, next) => {
 		});
 		res.redirect('/login');
 	} catch (error) {
-		next(error);
+		if (error.code === 'P2002') {
+			return res.status(400).render('signup', { errors: [{ msg: 'Username already exists' }] });
+		}
+		return res.status(500).send(`'Internal server error' ${error.message}`);
 	}
 });
 
