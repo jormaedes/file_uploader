@@ -1,52 +1,60 @@
-<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-300">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<div class="flex items-center justify-between h-20">
-			<!-- Logo -->
-			<div class="flex items-center gap-3">
-				<a href="/" class="flex items-center gap-2 group">
-					<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+<header class="sticky top-0 z-50 border-b border-slate-200 bg-[#f4f4f4]">
+	<div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
+		<div class="flex h-20 items-center justify-between gap-4">
+			<div class="flex shrink-0 items-center gap-3">
+				<a href="/" class="flex items-center gap-3">
+					<div class="flex h-9 w-9 items-center justify-center rounded-md bg-[#1f2937] text-white shadow-sm">
 						<i class="fa-solid fa-cloud text-lg"></i>
 					</div>
-					<div>
-						<span class="text-2xl font-bold font-heading text-slate-900 tracking-tight">JFLoader</span>
-						<span class="block text-[10px] uppercase font-semibold text-blue-600 tracking-widest -mt-1">Cloud Storage</span>
-					</div>
+					<span class="text-[2rem] font-bold tracking-tight text-slate-900">JFLoader</span>
 				</a>
 			</div>
 
-			<!-- Navigation Links -->
-			<nav class="hidden md:flex items-center gap-8">
-				<a href="/" class="text-sm font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</a>
-				<a href="#about" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Sobre</a>
-				<a href="#features" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Recursos</a>
-				<a href="#tech" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Tecnologias</a>
-				<a href="#how-it-works" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Como Funciona</a>
+			<nav class="hidden items-center gap-7 text-[15px] font-medium text-slate-700 md:flex">
+				<a href="/" class="transition-colors hover:text-slate-900">Home</a>
+				<a href="#about" class="transition-colors hover:text-slate-900">Sobre</a>
+				<a href="#features" class="transition-colors hover:text-slate-900">Recursos</a>
+				<a href="#tech" class="transition-colors hover:text-slate-900">Tecnologia</a>
+				<a href="#how-it-works" class="transition-colors hover:text-slate-900">Como funciona</a>
 			</nav>
 
-			<!-- Actions & Auth -->
-			<div class="flex items-center gap-4">
+			<div class="flex items-center gap-3 shrink-0">
 				<% if (locals.user) { %>
-					<a href="/homeUser/<%= locals.user.username %>" class="flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors">
-						<img src="<%= locals.user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="w-8 h-8 rounded-full object-cover border border-slate-300" alt="Avatar">
-						<span><%= locals.user.username %></span>
+					<a href="/home/<%= locals.user.username %>" class="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-100">
+						<img src="<%= locals.user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="h-8 w-8 rounded-full object-cover" alt="Avatar">
+						<span class="hidden sm:inline"><%= locals.user.username %></span>
 					</a>
-					<a href="/logout" class="text-sm font-medium text-slate-600 hover:text-red-600 px-3 py-2 rounded-lg hover:bg-red-50 transition-colors">
-						Sair
-					</a>
+					<a href="/logout" class="hidden rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 sm:inline-flex">Sair</a>
 				<% } else { %>
-					<!-- Selector Decorative Badges -->
-					<div class="hidden lg:flex items-center gap-2 bg-slate-100/80 px-2 py-1 rounded-full text-xs text-slate-600 border border-slate-200">
-						<span class="px-2 py-0.5 rounded-full bg-white font-semibold text-blue-600 shadow-xs">PT</span>
-						<span class="px-1 text-slate-400">EN</span>
+					<button type="button" class="hidden h-11 w-11 items-center justify-center rounded-full bg-[#2a2a2a] text-lg text-white transition hover:bg-[#1f1f1f] sm:flex" aria-label="Idioma">
+						<i class="fa-solid fa-globe"></i>
+					</button>
+					<div class="hidden items-center gap-3 sm:flex">
+						<a href="/login" class="inline-flex items-center justify-center rounded-full bg-[#2a2a2a] px-6 py-3 text-[1.05rem] font-semibold text-white shadow-sm transition hover:bg-[#1f1f1f]">
+							Login
+						</a>
+						<a href="/signup" class="inline-flex items-center justify-center rounded-full bg-[#1856f3] px-6 py-3 text-[1.05rem] font-semibold text-white shadow-sm transition hover:bg-[#4b97f6]">
+							Cadastrar
+						</a>
 					</div>
-					
-					<a href="/login" class="text-sm font-semibold text-slate-700 hover:text-blue-600 px-4 py-2 rounded-xl transition-colors">
-						Login
-					</a>
-					<a href="/signup" class="text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-5 py-2.5 rounded-xl shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/35 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
-						<span>Cadastre-se</span>
-					</a>
 				<% } %>
+
+				<details class="relative md:hidden">
+					<summary class="list-none cursor-pointer rounded-full bg-[#2a2a2a] p-3 text-white shadow-sm transition hover:bg-[#1f1f1f]">
+						<i class="fa-solid fa-bars text-lg"></i>
+					</summary>
+					<nav class="absolute right-0 top-[calc(100%+0.75rem)] w-56 rounded-2xl border border-slate-200 bg-white p-3 shadow-xl">
+						<a href="/" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Home</a>
+						<a href="#about" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Sobre</a>
+						<a href="#features" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Recursos</a>
+						<a href="#tech" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Tecnologia</a>
+						<a href="#how-it-works" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Como funciona</a>
+						<div class="mt-2 border-t border-slate-200 pt-2">
+							<a href="/login" class="block rounded-xl bg-[#2a2a2a] px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-[#1f1f1f]">Login</a>
+							<a href="/signup" class="mt-2 block rounded-xl bg-[#2a2a2a] px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-[#1f1f1f]">Cadastrar</a>
+						</div>
+					</nav>
+				</details>
 			</div>
 		</div>
 	</div>
