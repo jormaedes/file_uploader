@@ -88,7 +88,7 @@
 				</div>
 
 				<!-- Primary Action Button: + Novo Envio -->
-				<button id="openUploadFileDialogSidebar" class="w-full py-3 px-4 rounded-xl bg-[#2f7df6] hover:bg-[#256fe9] text-white font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 mb-8 cursor-pointer">
+				<button id="openUploadFileDialogSidebar" class="w-full py-3 px-4 rounded-lg bg-[#2f7df6] hover:bg-[#256fe9] text-white font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 mb-8 cursor-pointer">
 					<i class="fa-solid fa-plus text-sm"></i>
 					<span>Novo Envio</span>
 				</button>
@@ -99,7 +99,7 @@
 						<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-3 px-3">NAVEGAÇÃO</span>
 						<nav class="space-y-1">
 							<!-- Home (Root directory) -->
-							<a href="/home/<%= user.username %>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-blue-50 text-blue-600 transition-colors">
+							<a href="/home/<%= user.username %>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-blue-50 text-blue-600 transition-colors">
 								<i class="fa-solid fa-house text-base w-5 text-center"></i>
 								<span>Home</span>
 							</a>
@@ -153,7 +153,7 @@
 						<div class="bg-blue-600 h-full w-1/4 rounded-full"></div>
 					</div>
 					<div class="flex items-center justify-between text-[11px]">
-						<span class="text-slate-500">2.4 GB de 10 GB</span>
+						<span class="text-slate-500">24MB de 100 MB</span>
 						<a href="#" class="text-blue-600 font-bold hover:underline">Obter mais</a>
 					</div>
 				</div>
@@ -204,25 +204,16 @@
 
 				<!-- Header Controls -->
 				<div class="flex items-center gap-2.5 justify-end">
-					<div class="hidden sm:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
-						<span class="inline-flex items-center gap-1.5">
-							<i class="fa-solid fa-circle text-[8px] text-slate-400"></i>
-							<span>Renew at $0.4/week</span>
-						</span>
-					</div>
+					
 
-					<button class="hidden sm:inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
-						<i class="fa-regular fa-bell text-slate-500"></i>
-						<span>Alerts</span>
-					</button>
-
-					<button id="openUploadFileDialogHeader" class="px-3.5 py-2 rounded-xl bg-[#1d4ed8] hover:bg-[#1852d5] text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-all cursor-pointer">
+					<button id="openUploadFileDialogHeader" class="px-3.5 py-2 rounded-lg bg-[#1d4ed8] hover:bg-[#1852d5] text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-all cursor-pointer">
 						<i class="fa-solid fa-cloud-arrow-up text-sm"></i>
 						<span class="hidden sm:inline">Upload</span>
 					</button>
 
 					<a href="/profile" class="flex items-center gap-2.5 pl-1.5 sm:pl-2 border-l border-slate-200 hover:opacity-80 transition-opacity" title="Ir para Configurações de Perfil">
 						<img src="<%= user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-slate-300 shadow-xs" alt="User Profile">
+						<span class="hidden sm:inline text-sm font-semibold text-slate-700"><%= user.firstName %> <%= user.lastName %></span>
 					</a>
 				</div>
 			</header>
@@ -254,44 +245,26 @@
 							<%= currentFolder.name === 'home' || !currentFolder.parentId ? 'Home' : currentFolder.name %>
 						</h1>
 					</div>
-
-					<!-- Filter & View Controls -->
-					<div class="flex items-center gap-2">
-						<button class="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2 shadow-xs transition-colors">
-							<i class="fa-solid fa-sliders text-slate-400"></i>
-							<span>Filtrar</span>
-						</button>
-						<div class="flex items-center bg-slate-200/60 p-1 rounded-xl gap-1">
-							<button class="p-1.5 rounded-lg bg-white text-blue-600 shadow-xs" title="Modo Lista">
-								<i class="fa-solid fa-list text-xs"></i>
-							</button>
-							<button class="p-1.5 rounded-lg text-slate-500 hover:text-slate-800" title="Modo Grid">
-								<i class="fa-solid fa-border-all text-xs"></i>
-							</button>
-						</div>
-					</div>
+					
 				</div>
-
 				<!-- PASTAS SECTION -->
 				<section class="mb-10">
-					<div class="flex items-center justify-between mb-4">
-						<span class="text-xs font-bold uppercase tracking-wider text-slate-400 font-heading">PASTAS</span>
-						<button id="openCreateFolderDialogBtn" class="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 transition-colors cursor-pointer">
+					<div class="mb-4 flex items-center gap-2.5 justify-between">
+						<span class="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-400">Pastas</span>
+						<button id="openCreateFolderDialogBtn" class="px-3.5 py-2 rounded-lg bg-[#1d4ed8] hover:bg-[#1852d5] text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-all cursor-pointer">
 							<i class="fa-solid fa-folder-plus text-sm"></i>
 							<span>Nova Pasta</span>
 						</button>
 					</div>
 
-					<!-- Folders Grid -->
-					<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-						<!-- Back to Parent Folder if inside subfolder -->
+					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
 						<% if (currentFolder.parentId) { %>
-							<a href="/home/<%= user.username %>/folders/<%= currentFolder.parentId %>" class="bg-slate-100 hover:bg-slate-200/80 rounded-2xl p-4 border border-slate-200/80 flex items-center gap-3 transition-all group">
-								<div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-600 shadow-xs">
+							<a href="/home/<%= user.username %>/folders/<%= currentFolder.parentId %>" class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50">
+								<div class="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-600 shadow-inner">
 									<i class="fa-solid fa-arrow-left text-base"></i>
 								</div>
 								<div>
-									<h4 class="text-xs font-bold text-slate-800">.. Voltar</h4>
+									<h4 class="text-sm font-bold text-slate-800">Voltar</h4>
 									<p class="text-[11px] text-slate-500">Pasta anterior</p>
 								</div>
 							</a>
@@ -299,24 +272,24 @@
 
 						<% if (folderChildren && folderChildren.length > 0) { %>
 							<% folderChildren.forEach(folder => { %>
-								<div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-blue-300 transition-all flex items-center justify-between group">
-									<a href="/home/<%= user.username %>/folders/<%= folder.id %>" class="flex items-center gap-3.5 flex-grow min-w-0">
-										<div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 shrink-0 group-hover:scale-105 transition-transform">
+								<div class="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-blue-200 hover:shadow-md">
+									<a href="/home/<%= user.username %>/folders/<%= folder.id %>" class="flex min-w-0 flex-1 items-center gap-3">
+										<div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500 border border-amber-100">
 											<i class="fa-solid fa-folder text-lg"></i>
 										</div>
 										<div class="min-w-0">
-											<h4 class="text-xs font-bold text-slate-800 truncate hover:text-blue-600 transition-colors"><%= folder.name %></h4>
-											<p class="text-[11px] text-slate-400">Pasta do Usuário</p>
+											<h4 class="truncate text-sm font-semibold text-slate-800"><%= folder.name %></h4>
+											<p class="text-[11px] text-slate-400">Pasta</p>
 										</div>
 									</a>
-									<button onclick="openConfirmDeleteDialog('<%= folder.id %>', '<%= folder.name %>')" class="p-2 text-slate-400 hover:text-rose-600 transition-colors cursor-pointer" title="Excluir Pasta">
+									<button onclick="openConfirmDeleteDialog('<%= folder.id %>', '<%= folder.name %>')" class="rounded-lg p-2 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600" title="Excluir Pasta">
 										<i class="fa-solid fa-trash-can text-xs"></i>
 									</button>
 								</div>
 							<% }) %>
 						<% } else if (!currentFolder.parentId) { %>
-							<div class="col-span-full bg-white rounded-2xl p-6 border border-dashed border-slate-200 text-center text-slate-400 text-xs font-medium">
-								Nenhuma pasta criada ainda. Clique em "+ Nova Pasta" para organizar seus arquivos.
+							<div class="col-span-full rounded-2xl border border-dashed border-slate-200 bg-white p-6 text-center text-xs font-medium text-slate-400">
+								Nenhuma pasta criada ainda. Clique em "Nova Pasta" para organizar seus arquivos.
 							</div>
 						<% } %>
 					</div>
@@ -324,79 +297,64 @@
 
 				<!-- ARQUIVOS RECENTES / LISTA DE ARQUIVOS SECTION -->
 				<section>
-					<div class="flex items-center justify-between mb-4">
+					<div class="mb-4 flex items-center justify-between gap-3">
 						<div>
 							<h3 class="text-sm font-bold font-heading text-slate-900">Arquivos Recentes</h3>
-							<p class="text-xs text-slate-400 font-normal">Gerencie, baixe ou compartilhe seus arquivos armazenados</p>
+							<p class="text-xs font-normal text-slate-400">Gerencie, baixe ou compartilhe seus arquivos armazenados</p>
 						</div>
-						<span class="text-xs font-semibold bg-slate-100 text-slate-600 px-3 py-1 rounded-full border border-slate-200">
+						<span class="rounded-md border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
 							<%= files ? files.length : 0 %> itens exibidos
 						</span>
 					</div>
 
-					<!-- Files Table Container -->
-					<div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+					<div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 						<div class="overflow-x-auto">
-							<table class="w-full text-left border-collapse">
+							<table class="w-full border-collapse text-left">
 								<thead>
-									<tr class="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-										<th class="py-3.5 px-6">NOME DO ARQUIVO</th>
-										<th class="py-3.5 px-4">TIPO</th>
-										<th class="py-3.5 px-4">MODIFICADO</th>
-										<th class="py-3.5 px-4">TAMANHO</th>
-										<th class="py-3.5 px-6 text-right">AÇÕES</th>
+									<tr class="border-b border-slate-100 bg-slate-50 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-400">
+										<th class="px-6 py-3.5">Nome do arquivo</th>
+										<th class="px-4 py-3.5">Tipo</th>
+										<th class="px-4 py-3.5">Modificado</th>
+										<th class="px-4 py-3.5">Tamanho</th>
+										<th class="px-6 py-3.5 text-right">Ações</th>
 									</tr>
 								</thead>
 								<tbody class="divide-y divide-slate-100 text-xs" id="filesTableBody">
 									<% if (files && files.length > 0) { %>
 										<% files.forEach(file => { %>
 											<% const badgeInfo = getFileTypeBadge(file.type); %>
-											<tr class="hover:bg-slate-50/80 transition-colors file-row" data-file-type="<%= file.type %>">
-												<!-- File Name & Icon -->
-												<td class="py-4 px-6 font-semibold text-slate-800">
+											<tr class="file-row transition-colors hover:bg-slate-50" data-file-type="<%= file.type %>">
+												<td class="px-6 py-4 font-semibold text-slate-800">
 													<div class="flex items-center gap-3">
-														<div class="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0">
-															<i class="fa-solid <%= badgeInfo.icon %> text-base"></i>
+														<div class="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-600">
+															<i class="fa-solid <%= badgeInfo.icon %> text-sm"></i>
 														</div>
 														<div class="min-w-0">
-															<span class="block text-xs font-bold text-slate-800 truncate"><%= file.name %></span>
-															<span class="block text-[10px] text-slate-400 font-normal truncate"><%= file.type %></span>
+															<span class="block truncate text-xs font-bold text-slate-800"><%= file.name %></span>
+															<span class="block truncate text-[10px] text-slate-400"><%= file.type %></span>
 														</div>
 													</div>
 												</td>
-
-												<!-- Type Pill -->
-												<td class="py-4 px-4">
-													<span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase <%= badgeInfo.bg %>">
+												<td class="px-4 py-4">
+													<span class="rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide <%= badgeInfo.bg %>">
 														<%= badgeInfo.label %>
 													</span>
 												</td>
-
-												<!-- Formatted Date -->
-												<td class="py-4 px-4 text-slate-600 font-medium whitespace-nowrap">
+												<td class="px-4 py-4 whitespace-nowrap text-slate-600">
 													<%= formatDate(file.uploadedAt || file.createdAt) %>
 												</td>
-
-												<!-- Formatted Size -->
-												<td class="py-4 px-4 text-slate-600 font-medium whitespace-nowrap">
+												<td class="px-4 py-4 whitespace-nowrap text-slate-600">
 													<%= formatSize(file.size) %>
 												</td>
-
-												<!-- Actions -->
-												<td class="py-4 px-6 text-right whitespace-nowrap">
+												<td class="px-6 py-4 text-right whitespace-nowrap">
 													<div class="flex items-center justify-end gap-3 text-slate-400">
-														<!-- Download -->
-														<a href="<%= file.url %>" target="_blank" download="<%= file.name %>" class="hover:text-blue-600 transition-colors p-1" title="Download">
+														<a href="<%= file.url %>" target="_blank" download="<%= file.name %>" class="p-1 transition hover:text-blue-600" title="Download">
 															<i class="fa-solid fa-download text-sm"></i>
 														</a>
-
-														<!-- Share Link -->
-														<button onclick="navigator.clipboard.writeText('<%= file.url %>'); alert('Link do arquivo copiado!');" class="hover:text-blue-600 transition-colors p-1 cursor-pointer" title="Compartilhar Link">
+														<button onclick="navigator.clipboard.writeText('<%= file.url %>'); alert('Link do arquivo copiado!');" class="cursor-pointer p-1 transition hover:text-blue-600" title="Compartilhar Link">
 															<i class="fa-solid fa-share-nodes text-sm"></i>
 														</button>
-
-														<!-- Delete -->
-														<button onclick="openDeleteFileDialog('<%= file.id %>')" class="hover:text-rose-600 transition-colors p-1 cursor-pointer" title="Excluir Arquivo">
+														<button onclick="openDeleteFileDialog('<%= file.id %>')" class="cursor-pointer p-1 transition hover:text-rose-600" title="Excluir Arquivo">
 															<i class="fa-solid fa-trash-can text-sm"></i>
 														</button>
 													</div>
@@ -405,11 +363,11 @@
 										<% }) %>
 									<% } else { %>
 										<tr>
-											<td colspan="5" class="py-12 text-center text-slate-400 font-medium">
-												<div class="max-w-xs mx-auto text-center">
-													<i class="fa-solid fa-cloud-arrow-up text-3xl text-slate-300 mb-3 block"></i>
+											<td colspan="5" class="py-12 text-center font-medium text-slate-400">
+												<div class="mx-auto max-w-xs text-center">
+													<i class="fa-solid fa-cloud-arrow-up mb-3 block text-3xl text-slate-300"></i>
 													<p class="text-xs">Nenhum arquivo nesta pasta.</p>
-													<button id="openUploadFileDialogEmpty" class="mt-3 text-xs font-bold text-blue-600 hover:underline cursor-pointer">
+													<button id="openUploadFileDialogEmpty" class="mt-3 cursor-pointer text-xs font-bold text-blue-600 hover:underline">
 														Faça upload do seu primeiro arquivo
 													</button>
 												</div>
