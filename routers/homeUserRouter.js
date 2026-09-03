@@ -120,6 +120,16 @@ homeUserRouter.post('/:username/folders/:folderId/createFolder', isAuthenticated
 		if (!pathToFolder) {
 			return res.status(404).send('Folder not found');
 		}
+		const isExistFolder = await prisma.folder.findFirst({
+			where: {
+				name: folderName,
+				parentId: parseInt(folderId),
+				userId: userAuth.id,
+			},
+		});
+		if (isExistFolder) {
+			return res.status(400).send('Folder already exists');
+		}
 		await cloudinary.api.create_folder(`${pathToFolder}${folderName}`);
 		const currentFolder = await prisma.folder.findFirst({
 			where: {
