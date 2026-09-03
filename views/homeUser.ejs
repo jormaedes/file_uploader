@@ -62,26 +62,22 @@
 	}
 	%>
 
-	<div class="min-h-screen flex flex-col md:flex-row relative">
+	<div class="min-h-screen flex flex-col md:flex-row relative bg-[#f3f4f6]">
 
 		<!-- MOBILE BACKDROP OVERLAY -->
 		<div id="sidebarBackdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
 
 		<!-- SIDEBAR (RESPONSIVE DRAWER ON MOBILE, FIXED SIDEBAR ON DESKTOP) -->
-		<aside id="mobileSidebar" class="fixed inset-y-0 left-0 w-72 bg-white z-50 p-6 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:static md:w-64 md:z-auto border-r border-slate-200/80 shrink-0">
+		<aside id="mobileSidebar" class="fixed inset-y-0 left-0 w-72 bg-[#f9fafb] z-50 p-5 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:static md:w-64 md:z-auto border-r border-slate-200/80 shrink-0">
 			<div>
 				<!-- Logo & Mobile Close Button -->
 				<div class="flex items-center justify-between mb-8">
 					<a href="/home/<%= user.username %>" class="flex items-center gap-2.5 group">
-						<div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-							<i class="fa-solid fa-cloud text-lg"></i>
+						<div class="w-9 h-9 rounded-lg bg-[#1d4ed8] flex items-center justify-center text-white shadow-sm">
+							<i class="fa-solid fa-cloud text-base"></i>
 						</div>
 						<div>
-							<div class="flex items-center gap-1.5">
-								<span class="text-xl font-bold font-heading text-slate-900 tracking-tight">JFLoader</span>
-								<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 uppercase">CLOUD</span>
-							</div>
-							<span class="block text-[10px] text-slate-400 font-medium -mt-0.5">Armazenamento Rápido</span>
+							<span class="text-[2rem] font-bold font-heading text-slate-900 tracking-tight leading-none">JFLoader</span>
 						</div>
 					</a>
 
@@ -92,7 +88,7 @@
 				</div>
 
 				<!-- Primary Action Button: + Novo Envio -->
-				<button id="openUploadFileDialogSidebar" class="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-500/25 hover:shadow-blue-500/35 transition-all flex items-center justify-center gap-2 mb-8 cursor-pointer">
+				<button id="openUploadFileDialogSidebar" class="w-full py-3 px-4 rounded-xl bg-[#2f7df6] hover:bg-[#256fe9] text-white font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 mb-8 cursor-pointer">
 					<i class="fa-solid fa-plus text-sm"></i>
 					<span>Novo Envio</span>
 				</button>
@@ -145,7 +141,7 @@
 			<!-- Sidebar Bottom -->
 			<div class="mt-8 pt-6 border-t border-slate-100 space-y-6">
 				<!-- Storage Meter Box -->
-				<div class="bg-blue-50/70 border border-blue-100 rounded-2xl p-4">
+				<div class="bg-[#edf3ff] border border-[#dbe7ff] rounded-2xl p-4">
 					<div class="flex items-center justify-between text-xs font-semibold text-slate-700 mb-2">
 						<span class="flex items-center gap-1.5">
 							<i class="fa-solid fa-cloud text-blue-600 text-xs"></i>
@@ -180,7 +176,7 @@
 		<div class="flex-grow flex flex-col min-w-0">
 			
 			<!-- TOP HEADER BAR -->
-			<header class="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-4 flex items-center justify-between gap-3 sticky top-0 z-30">
+			<header class="bg-[#f7f7f7] border-b border-slate-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-30">
 				
 				<!-- Mobile Menu Toggle Button & Logo on Mobile -->
 				<div class="flex items-center gap-3">
@@ -190,7 +186,7 @@
 
 					<!-- Mobile Logo Icon -->
 					<a href="/home/<%= user.username %>" class="md:hidden flex items-center gap-2">
-						<div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs">
+						<div class="w-8 h-8 rounded-lg bg-[#1d4ed8] flex items-center justify-center text-white shadow-xs">
 							<i class="fa-solid fa-cloud text-sm"></i>
 						</div>
 						<span class="font-bold font-heading text-slate-900 text-base">JFLoader</span>
@@ -202,36 +198,31 @@
 					<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
 						<i class="fa-solid fa-magnifying-glass text-sm"></i>
 					</div>
-					<input type="text" id="searchInput" onkeyup="searchFiles()" placeholder="Pesquisar em Meus Arquivos..."
-						class="w-full pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 text-xs font-medium text-slate-800 outline-none transition-all">
+					<input type="text" id="searchInput" onkeyup="searchFiles()" placeholder="Search your files"
+						class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-800 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10">
 				</div>
 
 				<!-- Header Controls -->
 				<div class="flex items-center gap-2.5 justify-end">
-					<!-- Language Pill -->
-					<div class="hidden sm:flex items-center gap-1 bg-slate-100 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-600 border border-slate-200">
-						<i class="fa-solid fa-globe text-slate-400 text-xs"></i>
-						<span>PT</span>
+					<div class="hidden sm:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
+						<span class="inline-flex items-center gap-1.5">
+							<i class="fa-solid fa-circle text-[8px] text-slate-400"></i>
+							<span>Renew at $0.4/week</span>
+						</span>
 					</div>
 
-					<!-- Theme Switcher Icon -->
-					<button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-amber-500 hover:bg-slate-200 transition-colors" title="Modo Claro">
-						<i class="fa-solid fa-sun text-sm"></i>
+					<button class="hidden sm:inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+						<i class="fa-regular fa-bell text-slate-500"></i>
+						<span>Alerts</span>
 					</button>
 
-					<!-- Enviar Arquivo Button -->
-					<button id="openUploadFileDialogHeader" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-all cursor-pointer">
+					<button id="openUploadFileDialogHeader" class="px-3.5 py-2 rounded-xl bg-[#1d4ed8] hover:bg-[#1852d5] text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-all cursor-pointer">
 						<i class="fa-solid fa-cloud-arrow-up text-sm"></i>
-						<span class="hidden sm:inline">Enviar Arquivo</span>
+						<span class="hidden sm:inline">Upload</span>
 					</button>
 
-					<!-- User Profile Info Link -->
 					<a href="/profile" class="flex items-center gap-2.5 pl-1.5 sm:pl-2 border-l border-slate-200 hover:opacity-80 transition-opacity" title="Ir para Configurações de Perfil">
 						<img src="<%= user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-slate-300 shadow-xs" alt="User Profile">
-						<div class="hidden lg:block text-left leading-tight">
-							<span class="text-xs font-bold text-slate-900 block"><%= user.firstName ? (user.firstName + ' ' + user.lastName) : user.username %></span>
-							<span class="text-[10px] text-slate-400 font-medium block">Plano Pessoal</span>
-						</div>
 					</a>
 				</div>
 			</header>
