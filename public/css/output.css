@@ -335,6 +335,9 @@
   .col-span-full {
     grid-column: 1 / -1;
   }
+  .m-0 {
+    margin: 0px;
+  }
   .mx-auto {
     margin-inline: auto;
   }
@@ -517,6 +520,9 @@
   }
   .w-\[600px\] {
     width: 600px;
+  }
+  .w-\[calc\(100\%-2rem\)\] {
+    width: calc(100% - 2rem);
   }
   .w-full {
     width: 100%;
@@ -1910,6 +1916,15 @@ body {
 }
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: 'Outfit', sans-serif;
+}
+dialog {
+  margin: auto !important;
+}
+dialog[open] {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: auto;
 }
 @property --tw-translate-x {
   syntax: "*";

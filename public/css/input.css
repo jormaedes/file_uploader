@@ -2,19 +2,37 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-heading: 'Outfit', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --color-brand-blue: #1856F3;
-  --color-brand-dark: #0B1741;
-  --color-brand-cyan: #00A8FF;
+	--font-heading: 'Outfit', sans-serif;
+	--font-body: 'Inter', sans-serif;
+	--color-brand-blue: #1856F3;
+	--color-brand-dark: #0B1741;
+	--color-brand-cyan: #00A8FF;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #F8FAFC;
-  color: #0F172A;
+	font-family: 'Inter', sans-serif;
+	background-color: #F8FAFC;
+	color: #0F172A;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading {
-  font-family: 'Outfit', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+	font-family: 'Outfit', sans-serif;
+}
+
+/* Force HTML Dialog Centering */
+dialog {
+	margin: auto !important;
+}
+
+dialog[open] {
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	margin: auto;
 }
