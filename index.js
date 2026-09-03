@@ -42,6 +42,10 @@ app.use('/login', loginRouter);
 app.use('/home', homeUserRouter);
 app.use('/logout', logoutRouter);
 
+app.use((req, res) => {
+  res.status(404).send(`'The page ${req.originalUrl} you are looking for does not exist.'`);
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
