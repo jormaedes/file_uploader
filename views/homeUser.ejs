@@ -164,7 +164,7 @@
 
 				<!-- Settings & Logout -->
 				<div class="space-y-1">
-					<a href="#" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-colors">
+					<a href="/profile" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-colors">
 						<i class="fa-solid fa-gear text-slate-400"></i>
 						<span>Configurações</span>
 					</a>
@@ -225,14 +225,14 @@
 						<span class="hidden sm:inline">Enviar Arquivo</span>
 					</button>
 
-					<!-- User Profile Info -->
-					<div class="flex items-center gap-2.5 pl-1.5 sm:pl-2 border-l border-slate-200">
+					<!-- User Profile Info Link -->
+					<a href="/profile" class="flex items-center gap-2.5 pl-1.5 sm:pl-2 border-l border-slate-200 hover:opacity-80 transition-opacity" title="Ir para Configurações de Perfil">
 						<img src="<%= user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-slate-300 shadow-xs" alt="User Profile">
 						<div class="hidden lg:block text-left leading-tight">
 							<span class="text-xs font-bold text-slate-900 block"><%= user.firstName ? (user.firstName + ' ' + user.lastName) : user.username %></span>
 							<span class="text-[10px] text-slate-400 font-medium block">Plano Pessoal</span>
 						</div>
-					</div>
+					</a>
 				</div>
 			</header>
 

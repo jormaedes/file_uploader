@@ -5,6 +5,7 @@ import signupRouter from './routers/signupRouter.js';
 import loginRouter from './routers/loginRouter.js';
 import homeUserRouter from './routers/homeUserRouter.js';
 import logoutRouter from './routers/logoutRouter.js';
+import profileRouter from './routers/profileRouter.js';
 import session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { prisma } from './lib/prisma.js';
@@ -40,6 +41,7 @@ app.use('/', indexRouter);
 app.use('/signup', signupRouter);
 app.use('/login', loginRouter);
 app.use('/home', homeUserRouter);
+app.use('/profile', profileRouter);
 app.use('/logout', logoutRouter);
 
 app.use((req, res) => {
