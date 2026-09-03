@@ -8,7 +8,7 @@ import bcrypt from 'bcryptjs';
 const upload = multer({ storage: multer.memoryStorage() });
 const profileRouter = Router();
 
-// GET /profile - Exibir página de perfil do usuário
+// GET /profile - Exibir página de perfil do usuário com a lista de imagens enviadas
 profileRouter.get('/', isAuthenticated, async (req, res) => {
 	try {
 		const userId = req.session.userId;
@@ -20,9 +20,29 @@ profileRouter.get('/', isAuthenticated, async (req, res) => {
 			return res.redirect('/login');
 		}
 
-		// Obter arquivos do usuário para calcular estatísticas de armazenamento
+		// Obter todos os arquivos do usuário para calcular estatísticas de armazenamento
 		const userFiles = await prisma.file.findMany({
 			where: { userId: user.id },
+			orderBy: { uploadedAt: 'desc' },
+		});
+
+		// Filtrar apenas as imagens já enviadas pelo usuário
+		const userImages = userFiles.filter((file) => {
+			const type = (file.type || '').toLowerCase();
+			const name = (file.name || '').toLowerCase();
+			const url = (file.url || '').toLowerCase();
+			return (
+				type.includes('image') ||
+				type.includes('png') ||
+				type.includes('jpg') ||
+				type.includes('jpeg') ||
+				name.endsWith('.png') ||
+				name.endsWith('.jpg') ||
+				name.endsWith('.jpeg') ||
+				name.endsWith('.webp') ||
+				name.endsWith('.gif') ||
+				url.includes('image')
+			);
 		});
 
 		let totalSizeBytes = 0;
@@ -48,6 +68,7 @@ profileRouter.get('/', isAuthenticated, async (req, res) => {
 
 		res.render('profile', {
 			user,
+			userImages,
 			stats: {
 				totalSizeBytes,
 				imagesSizeBytes,
@@ -65,11 +86,11 @@ profileRouter.get('/', isAuthenticated, async (req, res) => {
 	}
 });
 
-// POST /profile/update - Atualizar dados pessoais e foto de perfil
+// POST /profile/update - Atualizar dados pessoais e foto de perfil (Upload ou imagem existente)
 profileRouter.post('/update', isAuthenticated, upload.single('profilePicture'), async (req, res) => {
 	try {
 		const userId = req.session.userId;
-		const { firstName, lastName, username } = req.body;
+		const { firstName, lastName, username, existingPictureUrl } = req.body;
 
 		const currentUser = await prisma.user.findUnique({
 			where: { id: userId },
@@ -81,7 +102,7 @@ profileRouter.post('/update', isAuthenticated, upload.single('profilePicture'), 
 
 		let newProfilePictureUrl = currentUser.profilePicture;
 
-		// Se o usuário enviou uma nova foto de perfil
+		// 1. Se o usuário enviou uma NOVA foto via upload
 		if (req.file) {
 			// Encontrar a pasta raiz (home) do usuário no banco de dados
 			const rootFolder = await prisma.folder.findFirst({
@@ -93,7 +114,7 @@ profileRouter.post('/update', isAuthenticated, upload.single('profilePicture'), 
 
 			const folderPath = `${currentUser.username}/`;
 
-			// 1. Upload para o Cloudinary na pasta do usuário
+			// Upload para o Cloudinary na pasta do usuário
 			const uploadResult = await new Promise((resolve, reject) => {
 				cloudinary.uploader.upload_stream(
 					{
@@ -109,7 +130,7 @@ profileRouter.post('/update', isAuthenticated, upload.single('profilePicture'), 
 
 			newProfilePictureUrl = uploadResult.url;
 
-			// 2. Salvar o arquivo no banco de dados na pasta raiz do usuário
+			// Salvar o arquivo no banco de dados na pasta raiz do usuário
 			if (rootFolder) {
 				await prisma.file.create({
 					data: {
@@ -123,6 +144,10 @@ profileRouter.post('/update', isAuthenticated, upload.single('profilePicture'), 
 					},
 				});
 			}
+		} 
+		// 2. Se o usuário escolheu uma imagem JÁ EXISTENTE das fotos salvas
+		else if (existingPictureUrl && existingPictureUrl.trim() !== '') {
+			newProfilePictureUrl = existingPictureUrl;
 		}
 
 		// Verificar se o novo nome de usuário já está em uso por outro usuário
@@ -132,8 +157,10 @@ profileRouter.post('/update', isAuthenticated, upload.single('profilePicture'), 
 			});
 			if (existingUser) {
 				const userFiles = await prisma.file.findMany({ where: { userId: currentUser.id } });
+				const userImages = userFiles.filter(f => (f.type || '').includes('image'));
 				return res.render('profile', {
 					user: currentUser,
+					userImages,
 					stats: { totalSizeBytes: 0, fileCount: userFiles.length },
 					errors: [{ msg: 'Este nome de usuário já está sendo utilizado.' }],
 					success: null,
@@ -142,7 +169,7 @@ profileRouter.post('/update', isAuthenticated, upload.single('profilePicture'), 
 		}
 
 		// 3. Atualizar dados do usuário no banco de dados
-		const updatedUser = await prisma.user.update({
+		await prisma.user.update({
 			where: { id: userId },
 			data: {
 				firstName: firstName || currentUser.firstName,

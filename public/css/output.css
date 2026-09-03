@@ -444,6 +444,9 @@
   .inline-flex {
     display: inline-flex;
   }
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
   .h-2 {
     height: calc(var(--spacing) * 2);
   }
@@ -485,6 +488,9 @@
   }
   .h-full {
     height: 100%;
+  }
+  .max-h-64 {
+    max-height: calc(var(--spacing) * 64);
   }
   .min-h-\[360px\] {
     min-height: 360px;
@@ -712,6 +718,9 @@
   .overflow-x-auto {
     overflow-x: auto;
   }
+  .overflow-y-auto {
+    overflow-y: auto;
+  }
   .scroll-smooth {
     scroll-behavior: smooth;
   }
@@ -764,6 +773,10 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
+  .border-b-2 {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 2px;
+  }
   .border-l {
     border-left-style: var(--tw-border-style);
     border-left-width: 1px;
@@ -794,6 +807,9 @@
       border-color: color-mix(in oklab, var(--color-blue-400) 30%, transparent);
     }
   }
+  .border-blue-600 {
+    border-color: var(--color-blue-600);
+  }
   .border-emerald-200 {
     border-color: var(--color-emerald-200);
   }
@@ -823,6 +839,9 @@
   }
   .border-slate-300 {
     border-color: var(--color-slate-300);
+  }
+  .border-transparent {
+    border-color: transparent;
   }
   .border-white {
     border-color: var(--color-white);
@@ -886,6 +905,12 @@
   }
   .bg-blue-600 {
     background-color: var(--color-blue-600);
+  }
+  .bg-blue-900\/20 {
+    background-color: color-mix(in srgb, oklch(37.9% 0.146 265.522) 20%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-blue-900) 20%, transparent);
+    }
   }
   .bg-cyan-100 {
     background-color: var(--color-cyan-100);
@@ -1173,6 +1198,9 @@
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
+  .py-8 {
+    padding-block: calc(var(--spacing) * 8);
+  }
   .py-12 {
     padding-block: calc(var(--spacing) * 12);
   }
@@ -1196,6 +1224,9 @@
   }
   .pr-4 {
     padding-right: calc(var(--spacing) * 4);
+  }
+  .pb-3 {
+    padding-bottom: calc(var(--spacing) * 3);
   }
   .pb-4 {
     padding-bottom: calc(var(--spacing) * 4);
@@ -1431,6 +1462,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  .opacity-0 {
+    opacity: 0%;
+  }
   .opacity-80 {
     opacity: 80%;
   }
@@ -1544,6 +1578,9 @@
       --tw-scale-z: 110%;
       scale: var(--tw-scale-x) var(--tw-scale-y);
     }
+    .group-hover\:opacity-100:is(:where(.group):hover *) {
+      opacity: 100%;
+    }
   }
   .selection\:bg-blue-500 ::selection {
     background-color: var(--color-blue-500);
@@ -1567,9 +1604,6 @@
     border-style: var(--tw-border-style);
     border-width: 0px;
   }
-  .file\:bg-blue-50::file-selector-button {
-    background-color: var(--color-blue-50);
-  }
   .file\:bg-blue-100::file-selector-button {
     background-color: var(--color-blue-100);
   }
@@ -1579,16 +1613,9 @@
   .file\:py-2::file-selector-button {
     padding-block: calc(var(--spacing) * 2);
   }
-  .file\:py-2\.5::file-selector-button {
-    padding-block: calc(var(--spacing) * 2.5);
-  }
   .file\:text-xs::file-selector-button {
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
-  }
-  .file\:font-bold::file-selector-button {
-    --tw-font-weight: var(--font-weight-bold);
-    font-weight: var(--font-weight-bold);
   }
   .file\:font-semibold::file-selector-button {
     --tw-font-weight: var(--font-weight-semibold);
@@ -1636,6 +1663,9 @@
     }
     .hover\:border-blue-400:hover {
       border-color: var(--color-blue-400);
+    }
+    .hover\:border-blue-500:hover {
+      border-color: var(--color-blue-500);
     }
     .hover\:border-cyan-400:hover {
       border-color: var(--color-cyan-400);
@@ -1823,15 +1853,15 @@
         --tw-shadow-color: color-mix(in oklab, color-mix(in oklab, var(--color-indigo-500) 10%, transparent) var(--tw-shadow-alpha), transparent);
       }
     }
-    .hover\:file\:bg-blue-100:hover::file-selector-button {
-      background-color: var(--color-blue-100);
-    }
     .hover\:file\:bg-blue-200:hover::file-selector-button {
       background-color: var(--color-blue-200);
     }
   }
   .focus\:border-blue-500:focus {
     border-color: var(--color-blue-500);
+  }
+  .focus\:border-blue-600:focus {
+    border-color: var(--color-blue-600);
   }
   .focus\:bg-white:focus {
     background-color: var(--color-white);
@@ -1877,6 +1907,9 @@
     }
     .sm\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .sm\:grid-cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
     .sm\:flex-row {
       flex-direction: row;
