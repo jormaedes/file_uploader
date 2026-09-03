@@ -1,39 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>JFLoader</title>
+	<title>Cadastrar-se - JFLoader</title>
+	
+	<!-- Google Fonts: Outfit & Inter -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	
+	<!-- FontAwesome Icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	
+	<!-- Devicon Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+	
+	<!-- Tailwind Compiled CSS -->
+	<link href="/css/output.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+	<!-- Header Navigation -->
 	<%- include('header', { user: locals.user }) %>
-		<% if (locals.errors && locals.errors.length> 0) { %>
-			<ul>
-				<% locals.errors.forEach(error=> { %>
-					<li>
-						<%= error.msg %>
-					</li>
-					<% }) %>
-			</ul>
+
+	<main class="flex-grow flex items-center justify-center px-4 py-12 relative overflow-hidden">
+		<!-- Background decorative glow -->
+		<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+		<div class="max-w-lg w-full bg-white rounded-3xl p-8 sm:p-10 shadow-2xl shadow-blue-900/10 border border-slate-100 relative overflow-hidden my-6">
+			<!-- Top Accent Bar -->
+			<div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-700"></div>
+
+			<!-- Form Header -->
+			<div class="text-center mb-8">
+				<div class="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 mx-auto mb-4 shadow-xs">
+					<i class="fa-solid fa-user-plus text-2xl"></i>
+				</div>
+				<h1 class="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 tracking-tight">Crie sua Conta Grátis</h1>
+				<p class="text-xs sm:text-sm text-slate-500 mt-1">Comece a armazenar e organizar seus arquivos na nuvem hoje.</p>
+			</div>
+
+			<!-- Error Messages -->
+			<% if (locals.errors && locals.errors.length > 0) { %>
+				<div class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-xl mb-6 text-rose-700 text-xs sm:text-sm shadow-xs">
+					<div class="flex items-center gap-2 font-semibold mb-1">
+						<i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+						<span>Atenção aos erros no formulário</span>
+					</div>
+					<ul class="list-disc list-inside space-y-1 text-rose-600">
+						<% locals.errors.forEach(error => { %>
+							<li><%= error.msg %></li>
+						<% }) %>
+					</ul>
+				</div>
 			<% } %>
-				<main>
-					<form action="/signup" method="POST">
-						<label for="firstName">First Name:</label>
-						<input type="text" id="firstName" name="firstName" required>
-						<label for="lastName">Last Name:</label>
-						<input type="text" id="lastName" name="lastName" required>
-						<label for="username">Username:</label>
-						<input type="text" id="username" name="username" required>
-						<label for="password">Password:</label>
-						<input type="password" id="password" name="password" required>
-						<label for="confirmPassword">Confirm Password:</label>
-						<input type="password" id="confirmPassword" name="confirmPassword" required>
-						<button type="submit">Create an account</button>
-					</form>
-				</main>
-				<%- include('footer') %>
+
+			<!-- Signup Form -->
+			<form action="/signup" method="POST" class="space-y-4">
+				<!-- Name Row (First Name & Last Name) -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<!-- First Name -->
+					<div>
+						<label for="firstName" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+							Primeiro Nome
+						</label>
+						<div class="relative">
+							<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+								<i class="fa-solid fa-id-card text-sm"></i>
+							</div>
+							<input type="text" id="firstName" name="firstName" placeholder="Seu nome" required
+								class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-sm outline-none bg-slate-50/50 focus:bg-white text-slate-800 font-medium placeholder:text-slate-400">
+						</div>
+					</div>
+
+					<!-- Last Name -->
+					<div>
+						<label for="lastName" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+							Último Nome
+						</label>
+						<div class="relative">
+							<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+								<i class="fa-solid fa-signature text-sm"></i>
+							</div>
+							<input type="text" id="lastName" name="lastName" placeholder="Seu sobrenome" required
+								class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-sm outline-none bg-slate-50/50 focus:bg-white text-slate-800 font-medium placeholder:text-slate-400">
+						</div>
+					</div>
+				</div>
+
+				<!-- Username Field -->
+				<div>
+					<label for="username" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+						Nome de Usuário
+					</label>
+					<div class="relative">
+						<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+							<i class="fa-solid fa-at text-sm"></i>
+						</div>
+						<input type="text" id="username" name="username" placeholder="Escolha seu nome de usuário" required
+							class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-sm outline-none bg-slate-50/50 focus:bg-white text-slate-800 font-medium placeholder:text-slate-400">
+					</div>
+				</div>
+
+				<!-- Password Row -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<!-- Password Field -->
+					<div>
+						<label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+							Palavra-passe
+						</label>
+						<div class="relative">
+							<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+								<i class="fa-solid fa-lock text-sm"></i>
+							</div>
+							<input type="password" id="password" name="password" placeholder="••••••••" required
+								class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-sm outline-none bg-slate-50/50 focus:bg-white text-slate-800 font-medium placeholder:text-slate-400">
+						</div>
+					</div>
+
+					<!-- Confirm Password Field -->
+					<div>
+						<label for="confirmPassword" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+							Confirmar Palavra-passe
+						</label>
+						<div class="relative">
+							<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+								<i class="fa-solid fa-shield-check text-sm"></i>
+							</div>
+							<input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required
+								class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-sm outline-none bg-slate-50/50 focus:bg-white text-slate-800 font-medium placeholder:text-slate-400">
+						</div>
+					</div>
+				</div>
+
+				<!-- Submit Button -->
+				<button type="submit"
+					class="w-full py-3.5 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold font-heading shadow-lg shadow-blue-500/25 hover:shadow-blue-500/35 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer pt-3">
+					<span>Criar Minha Conta</span>
+					<i class="fa-solid fa-arrow-right text-sm"></i>
+				</button>
+			</form>
+
+			<!-- Footer Toggle Link -->
+			<div class="mt-8 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
+				<p>Já possui uma conta? 
+					<a href="/login" class="font-bold text-blue-600 hover:text-blue-700 hover:underline">Faça login</a>
+				</p>
+			</div>
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<%- include('footer') %>
 </body>
 
 </html>
