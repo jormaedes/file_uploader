@@ -307,7 +307,7 @@
 						</span>
 					</div>
 
-					<div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+					<div class="overflow-hidden rounded-t-xl">
 						<div class="overflow-x-auto">
 							<table class="w-full border-collapse text-left">
 								<thead>
@@ -323,8 +323,8 @@
 									<% if (files && files.length > 0) { %>
 										<% files.forEach(file => { %>
 											<% const badgeInfo = getFileTypeBadge(file.type); %>
-											<tr class="file-row transition-colors hover:bg-slate-50" data-file-type="<%= file.type %>">
-												<td class="px-6 py-4 font-semibold text-slate-800">
+											<tr class="file-row transition-colors hover:bg-slate-50 cursor-pointer" data-file-type="<%= file.type %>">
+												<td class="px-6 py-4 font-semibold text-slate-800 ">
 													<div class="flex items-center gap-3">
 														<div class="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-600">
 															<i class="fa-solid <%= badgeInfo.icon %> text-sm"></i>
