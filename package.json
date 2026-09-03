@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "prisma generate && prisma migrate deploy && tailwindcss -i ./public/css/input.css -o ./public/css/output.css",
+    "build": "prisma generate && prisma migrate deploy",
     "build:css": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch",
     "start": "node --env-file=.env index.js",
     "dev": "node --env-file=.env --watch index.js"
