@@ -30,7 +30,6 @@
 			<summary>Add a new file</summary>
 			<form action="<%= '/home/' + user.username + '/folders/' + currentFolder.id + '/uploadFile' %>"
 				method="post" enctype="multipart/form-data">
-				<input type="text" name="fileName" placeholder="File name" required>
 				<input type="file" name="file" required>
 				<button type="submit">Add file</button>
 			</form>
