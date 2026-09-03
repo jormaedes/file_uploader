@@ -225,7 +225,7 @@ homeUserRouter.post('/:username/folders/:folderId/uploadFile', upload.single('fi
 	}
 });
 
-homeUserRouter.post('/:username/folders/:folderId/deleteFile/:fileId', isAuthenticated, async (req, res) => {
+homeUserRouter.get('/:username/folders/:folderId/deleteFile/:fileId', isAuthenticated, async (req, res) => {
 	try {
 		const { username, folderId } = req.params;
 		const fileId = req.params.fileId;
@@ -247,7 +247,7 @@ homeUserRouter.post('/:username/folders/:folderId/deleteFile/:fileId', isAuthent
 		if (!file) {
 			return res.status(404).send('File not found');
 		}
-		await cloudinary.uploader.destroy(file.cloudinaryId);
+		await cloudinary.uploader.destroy(file.cloudinaryId, { resource_type: file.type.split('/')[0] });
 		await prisma.file.delete({
 			where: {
 				id: parseInt(fileId),
@@ -256,9 +256,8 @@ homeUserRouter.post('/:username/folders/:folderId/deleteFile/:fileId', isAuthent
 		return res.redirect(`/home/${username}/folders/${folderId}`);
 	} catch (error) {
 		console.log(error);
-		res.status(500).send(`'Internal server error' ${error}`);
+		res.status(500).send(`'Internal server error' ${error.message}`);
 	}
 });
-
 
 export default homeUserRouter;
