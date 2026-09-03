@@ -1,19 +1,53 @@
-<header>
-	<% if (!locals.user) { %>
-		<h1><a href="/">JFLoader</a></h1>
-		<nav>
-			<ul>
-				<li><a href="#about">About</a></li>
-				<li><a href="/login">Login</a></li>
-				<li><a href="/signup">Sign Up</a></li>
-			</ul>
-		</nav>
-		<% } else { %>
-			<h1><a href="/">JFLoader</a></h1>
-			<nav>
-				<ul>
-					<li><a href="/logout">Logout</a></li>
-				</ul>
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-300">
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+		<div class="flex items-center justify-between h-20">
+			<!-- Logo -->
+			<div class="flex items-center gap-3">
+				<a href="/" class="flex items-center gap-2 group">
+					<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+						<i class="fa-solid fa-cloud text-lg"></i>
+					</div>
+					<div>
+						<span class="text-2xl font-bold font-heading text-slate-900 tracking-tight">JFLoader</span>
+						<span class="block text-[10px] uppercase font-semibold text-blue-600 tracking-widest -mt-1">Cloud Storage</span>
+					</div>
+				</a>
+			</div>
+
+			<!-- Navigation Links -->
+			<nav class="hidden md:flex items-center gap-8">
+				<a href="/" class="text-sm font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</a>
+				<a href="#about" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Sobre</a>
+				<a href="#features" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Recursos</a>
+				<a href="#tech" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Tecnologias</a>
+				<a href="#how-it-works" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Como Funciona</a>
 			</nav>
-			<% } %>
+
+			<!-- Actions & Auth -->
+			<div class="flex items-center gap-4">
+				<% if (locals.user) { %>
+					<a href="/homeUser/<%= locals.user.username %>" class="flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors">
+						<img src="<%= locals.user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="w-8 h-8 rounded-full object-cover border border-slate-300" alt="Avatar">
+						<span><%= locals.user.username %></span>
+					</a>
+					<a href="/logout" class="text-sm font-medium text-slate-600 hover:text-red-600 px-3 py-2 rounded-lg hover:bg-red-50 transition-colors">
+						Sair
+					</a>
+				<% } else { %>
+					<!-- Selector Decorative Badges -->
+					<div class="hidden lg:flex items-center gap-2 bg-slate-100/80 px-2 py-1 rounded-full text-xs text-slate-600 border border-slate-200">
+						<span class="px-2 py-0.5 rounded-full bg-white font-semibold text-blue-600 shadow-xs">PT</span>
+						<span class="px-1 text-slate-400">EN</span>
+					</div>
+					
+					<a href="/login" class="text-sm font-semibold text-slate-700 hover:text-blue-600 px-4 py-2 rounded-xl transition-colors">
+						Login
+					</a>
+					<a href="/signup" class="text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-5 py-2.5 rounded-xl shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/35 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+						<span>Cadastre-se</span>
+					</a>
+				<% } %>
+			</div>
+		</div>
+	</div>
 </header>

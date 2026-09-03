@@ -1,19 +1,638 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" class="scroll-smooth">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>JFLoader</title>
+	<title>JFLoader - Armazenamento e Gestão de Arquivos na Nuvem</title>
+
+	<!-- Google Fonts: Outfit & Inter -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+		rel="stylesheet">
+
+	<!-- FontAwesome Icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+	<!-- Devicon Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+
+	<!-- Tailwind Compiled CSS -->
 	<link href="/css/output.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-blue-500 selection:text-white">
+	<!-- Header Navigation -->
 	<%- include('header', { user: locals.user }) %>
-		<main>
-			<h1>Welcome to JFLoader</h1>
-			<p>Your one-stop solution for file uploading and management.</p>
+
+		<main class="overflow-hidden">
+			<!-- HERO SECTION -->
+			<section
+				class="relative pt-12 pb-20 lg:pt-20 lg:pb-32 bg-gradient-to-b from-white via-blue-50/40 to-slate-50">
+				<!-- Background decorative glow -->
+				<div
+					class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-3xl pointer-events-none">
+				</div>
+
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+					<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+
+						<!-- Left Text Content -->
+						<div class="lg:col-span-6 text-center lg:text-left">
+							<!-- Badge -->
+							<div
+								class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/70 border border-blue-200 text-blue-700 text-xs font-semibold uppercase tracking-wider mb-6 shadow-xs">
+								<i class="fa-solid fa-code text-blue-600"></i>
+								<span>ODIN PROJECT FULL STACK ELITE</span>
+							</div>
+
+							<!-- Main Title -->
+							<h1
+								class="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-heading text-slate-900 tracking-tight leading-[1.15] mb-6">
+								Armazenamento e Gestão de Arquivos <span
+									class="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700 bg-clip-text text-transparent">na
+									Nuvem</span>
+							</h1>
+
+							<!-- Subtitle -->
+							<p
+								class="text-base sm:text-lg text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+								Armazene, organize e compartilhe seus arquivos com segurança e velocidade máxima. Uma
+								experiência intuitiva inspirada nas melhores plataformas cloud, desenvolvida com Node.js
+								e Prisma.
+							</p>
+
+							<!-- Buttons -->
+							<div
+								class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-12">
+								<a href="/signup"
+									class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+									<span>Começar Agora</span>
+									<i class="fa-solid fa-arrow-right text-sm"></i>
+								</a>
+								<a href="https://github.com/jormaedes/file_uploader" target="_blank"
+									class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200 shadow-xs hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+									<i class="fa-brands fa-github text-lg text-slate-800"></i>
+									<span>Ver no GitHub</span>
+								</a>
+							</div>
+
+							<!-- Metrics / Highlights -->
+							<div
+								class="pt-6 border-t border-slate-200/80 grid grid-cols-3 gap-4 text-center lg:text-left">
+								<div>
+									<span
+										class="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900">100%</span>
+									<span class="block text-xs font-medium text-slate-500 mt-0.5">Armazene Seguro</span>
+								</div>
+								<div>
+									<span
+										class="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900">Zero</span>
+									<span class="block text-xs font-medium text-slate-500 mt-0.5">Complicação</span>
+								</div>
+								<div>
+									<span
+										class="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900">Fast</span>
+									<span class="block text-xs font-medium text-slate-500 mt-0.5">Upload e ERP</span>
+								</div>
+							</div>
+						</div>
+
+						<!-- Right Interactive Mockup -->
+						<div class="lg:col-span-6 relative">
+							<!-- Security pill floating top right -->
+							<div
+								class="absolute -top-4 right-4 z-20 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-200 shadow-md text-xs font-semibold text-slate-700 flex items-center gap-2">
+								<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+								<span>100% Seguro • Suporte a Criptografia</span>
+							</div>
+
+							<!-- Main Mockup Container -->
+							<div
+								class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl shadow-blue-900/10 border border-slate-100 relative">
+								<!-- Mockup Window Header -->
+								<div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+									<div class="flex items-center gap-2">
+										<div class="w-3 h-3 rounded-full bg-rose-400"></div>
+										<div class="w-3 h-3 rounded-full bg-amber-400"></div>
+										<div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+									</div>
+									<div
+										class="flex items-center gap-2 bg-slate-100 px-4 py-1.5 rounded-full text-xs font-medium text-slate-600">
+										<i class="fa-solid fa-cloud text-blue-500 text-xs"></i>
+										<span>JFLoader Workspace</span>
+									</div>
+									<div class="w-4"></div>
+								</div>
+
+								<!-- Storage Status Bar -->
+								<div class="bg-blue-50/70 border border-blue-100 rounded-2xl p-4 mb-6">
+									<div
+										class="flex items-center justify-between text-xs font-semibold text-slate-700 mb-2">
+										<span class="flex items-center gap-2">
+											<i class="fa-solid fa-hard-drive text-blue-600"></i>
+											Armazenamento ativo
+										</span>
+										<span
+											class="text-blue-600 font-bold bg-white px-2 py-0.5 rounded-full border border-blue-200 text-[11px]">Personalizado</span>
+									</div>
+									<div class="w-full bg-blue-200/60 h-2.5 rounded-full overflow-hidden mb-1">
+										<div class="bg-blue-600 h-full w-1/4 rounded-full"></div>
+									</div>
+									<div class="flex justify-between text-[11px] text-slate-500">
+										<span>2.5 GB de 10 GB utilizados</span>
+										<span>25% ocupado</span>
+									</div>
+								</div>
+
+								<!-- File List Items -->
+								<div class="space-y-3">
+									<!-- File Item 1: Folder -->
+									<div
+										class="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 bg-slate-50/60 hover:bg-slate-100/80 transition-colors">
+										<div class="flex items-center gap-3.5">
+											<div
+												class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600">
+												<i class="fa-solid fa-folder text-lg"></i>
+											</div>
+											<div>
+												<h4 class="text-xs font-semibold text-slate-800">The Odin Project -
+													Assets</h4>
+												<p class="text-[11px] text-slate-500">Pasta • 124 MB</p>
+											</div>
+										</div>
+										<i class="fa-solid fa-ellipsis-vertical text-slate-400 text-xs"></i>
+									</div>
+
+									<!-- File Item 2: Image -->
+									<div
+										class="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 bg-slate-50/60 hover:bg-slate-100/80 transition-colors">
+										<div class="flex items-center gap-3.5">
+											<div
+												class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+												<i class="fa-solid fa-image text-lg"></i>
+											</div>
+											<div>
+												<h4 class="text-xs font-semibold text-slate-800">hero-banner-design.png
+												</h4>
+												<p class="text-[11px] text-slate-500">Imagem • 3.4 MB</p>
+											</div>
+										</div>
+										<span
+											class="text-[10px] font-semibold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md">Sincronizado</span>
+									</div>
+
+									<!-- File Item 3: Document -->
+									<div
+										class="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 bg-slate-50/60 hover:bg-slate-100/80 transition-colors">
+										<div class="flex items-center gap-3.5">
+											<div
+												class="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center text-rose-600">
+												<i class="fa-solid fa-file-pdf text-lg"></i>
+											</div>
+											<div>
+												<h4 class="text-xs font-semibold text-slate-800">
+													relatorio_tecnico_sistema.pdf</h4>
+												<p class="text-[11px] text-slate-500">PDF • 1.2 MB</p>
+											</div>
+										</div>
+										<i class="fa-solid fa-ellipsis-vertical text-slate-400 text-xs"></i>
+									</div>
+								</div>
+
+								<!-- Floating Bottom Badge -->
+								<div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-center">
+									<div
+										class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold px-4 py-2 rounded-full shadow-xs">
+										<i class="fa-solid fa-cloud-arrow-up text-blue-600"></i>
+										<span>Upload Rápido - Ficheiros e Pastas Organizadas</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</section>
+
+			<!-- RECURSOS PRINCIPAIS SECTION -->
+			<section id="features" class="py-20 bg-white">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+					<!-- Section Header -->
+					<div class="text-center max-w-3xl mx-auto mb-16">
+						<span
+							class="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+							RECURSOS PRINCIPAIS
+						</span>
+						<h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 mt-4 mb-4">
+							Privilégios e Produtividade para seus Arquivos
+						</h2>
+						<p class="text-slate-600 text-base">
+							Tudo o que você precisa para armazenar, categorizar e gerenciar arquivos em uma nuvem rápida
+							e respeitável.
+						</p>
+					</div>
+
+					<!-- Feature Cards Grid -->
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+						<!-- Card 1 -->
+						<div
+							class="bg-slate-50/70 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-blue-300 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 group">
+							<div
+								class="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
+								<i class="fa-solid fa-cloud-arrow-up text-xl"></i>
+							</div>
+							<h3 class="text-lg font-bold font-heading text-slate-900 mb-2">Upload Rápido & Seguro</h3>
+							<p class="text-sm text-slate-600 leading-relaxed">
+								Envio de arquivos com validação instantânea no servidor e armazenamento robusto em
+								nuvem.
+							</p>
+						</div>
+
+						<!-- Card 2 -->
+						<div
+							class="bg-slate-50/70 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-amber-300 shadow-sm hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300 group">
+							<div
+								class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 mb-6 group-hover:scale-110 transition-transform">
+								<i class="fa-solid fa-folder-tree text-xl"></i>
+							</div>
+							<h3 class="text-lg font-bold font-heading text-slate-900 mb-2">Organização em Pastas</h3>
+							<p class="text-sm text-slate-600 leading-relaxed">
+								Crie pastas, aninhe conteúdos e categorize documentos para máxima produtividade
+								cotidiana.
+							</p>
+						</div>
+
+						<!-- Card 3 -->
+						<div
+							class="bg-slate-50/70 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-indigo-300 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 group">
+							<div
+								class="w-12 h-12 rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform">
+								<i class="fa-solid fa-shield-halved text-xl"></i>
+							</div>
+							<h3 class="text-lg font-bold font-heading text-slate-900 mb-2">Prisma ORM & Auth</h3>
+							<p class="text-sm text-slate-600 leading-relaxed">
+								Controle de acesso restrito aos arquivos de cada usuário garantido pelo schema
+								relacional do Prisma.
+							</p>
+						</div>
+
+						<!-- Card 4 -->
+						<div
+							class="bg-slate-50/70 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-emerald-300 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 group">
+							<div
+								class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-600 mb-6 group-hover:scale-110 transition-transform">
+								<i class="fa-solid fa-download text-xl"></i>
+							</div>
+							<h3 class="text-lg font-bold font-heading text-slate-900 mb-2">Download Imediato</h3>
+							<p class="text-sm text-slate-600 leading-relaxed">
+								Acesse, visualize metadados e faça download dos seus arquivos quando e onde desejar com
+								facilidade.
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</section>
+
+			<!-- STACK TECNOLÓGICA SECTION -->
+			<section id="tech" class="py-20 bg-slate-50/60 border-y border-slate-200/60">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+					<!-- Section Header -->
+					<div class="text-center max-w-3xl mx-auto mb-16">
+						<span
+							class="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+							STACK TECNOLÓGICA
+						</span>
+						<h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 mt-4 mb-4">
+							Desenvolvido com Tecnologia Moderna
+						</h2>
+						<p class="text-slate-600 text-base">
+							Construído com base no currículo Node.js do The Odin Project para garantir confiabilidade e
+							alto desempenho.
+						</p>
+					</div>
+
+					<!-- Tech Cards Grid -->
+					<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+						<!-- Node.js -->
+						<div
+							class="bg-white rounded-2xl p-6 text-center border border-slate-200/80 shadow-xs hover:shadow-md hover:border-emerald-400 transition-all">
+							<i class="devicon-nodejs-plain colored text-5xl mb-3 inline-block"></i>
+							<h4 class="text-base font-bold font-heading text-slate-900">Node.js</h4>
+							<p class="text-xs text-slate-500 mt-1">Runtime & Backend</p>
+						</div>
+
+						<!-- Express -->
+						<div
+							class="bg-white rounded-2xl p-6 text-center border border-slate-200/80 shadow-xs hover:shadow-md hover:border-slate-400 transition-all">
+							<i class="devicon-express-original text-5xl mb-3 inline-block text-slate-800"></i>
+							<h4 class="text-base font-bold font-heading text-slate-900">Express</h4>
+							<p class="text-xs text-slate-500 mt-1">API & Routing</p>
+						</div>
+
+						<!-- PostgreSQL -->
+						<div
+							class="bg-white rounded-2xl p-6 text-center border border-slate-200/80 shadow-xs hover:shadow-md hover:border-blue-400 transition-all">
+							<i class="devicon-postgresql-plain colored text-5xl mb-3 inline-block"></i>
+							<h4 class="text-base font-bold font-heading text-slate-900">PostgreSQL</h4>
+							<p class="text-xs text-slate-500 mt-1">Banco Relacional</p>
+						</div>
+
+						<!-- Prisma -->
+						<div
+							class="bg-white rounded-2xl p-6 text-center border border-slate-200/80 shadow-xs hover:shadow-md hover:border-indigo-400 transition-all">
+							<i class="devicon-prisma-plain colored text-5xl mb-3 inline-block text-indigo-600"></i>
+							<h4 class="text-base font-bold font-heading text-slate-900">Prisma</h4>
+							<p class="text-xs text-slate-500 mt-1">ORM para Node</p>
+						</div>
+
+						<!-- Tailwind -->
+						<div
+							class="bg-white rounded-2xl p-6 text-center border border-slate-200/80 shadow-xs hover:shadow-md hover:border-cyan-400 transition-all">
+							<i class="devicon-tailwindcss-plain colored text-5xl mb-3 inline-block"></i>
+							<h4 class="text-base font-bold font-heading text-slate-900">Tailwind</h4>
+							<p class="text-xs text-slate-500 mt-1">Design System</p>
+						</div>
+
+						<!-- Git -->
+						<div
+							class="bg-white rounded-2xl p-6 text-center border border-slate-200/80 shadow-xs hover:shadow-md hover:border-orange-400 transition-all">
+							<i class="devicon-git-plain colored text-5xl mb-3 inline-block"></i>
+							<h4 class="text-base font-bold font-heading text-slate-900">Git</h4>
+							<p class="text-xs text-slate-500 mt-1">Versionamento</p>
+						</div>
+					</div>
+
+				</div>
+			</section>
+
+			<!-- SOBRE A PLATAFORMA SECTION -->
+			<section id="about" class="py-20 bg-white">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+						<!-- Left Text Column -->
+						<div class="lg:col-span-6">
+							<span
+								class="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+								SOBRE A PLATAFORMA
+							</span>
+							<h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 mt-4 mb-6">
+								Empoderando a Gestão de Arquivos com Simplicidade
+							</h2>
+							<p class="text-slate-600 text-base leading-relaxed mb-6">
+								O <strong class="text-slate-900 font-semibold">JFLoader</strong> foi desenvolvido sobre
+								a premissa de que o gerenciamento de arquivos em nuvem deve ser rápido, seguro e
+								agradável. Inspirado nas melhores experiências como Dropbox e Google Drive, o projeto
+								implementa arquitetura MVC completa com autenticação de acesso e permissões por usuário.
+							</p>
+
+							<!-- Bullet Checklist -->
+							<ul class="space-y-4 mb-8">
+								<li class="flex items-start gap-3">
+									<i class="fa-solid fa-circle-check text-blue-600 text-lg mt-0.5"></i>
+									<span class="text-sm font-medium text-slate-700">Autenticação com Passport.js &
+										sessões persistentes no banco de dados.</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="fa-solid fa-circle-check text-blue-600 text-lg mt-0.5"></i>
+									<span class="text-sm font-medium text-slate-700">Estruturação de arquivos em
+										hierarquia com modelagem relacional Prisma.</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="fa-solid fa-circle-check text-blue-600 text-lg mt-0.5"></i>
+									<span class="text-sm font-medium text-slate-700">Interface visual refinada baseada
+										nos padrões visuais do Tailwind.</span>
+								</li>
+							</ul>
+
+							<a href="/signup"
+								class="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-md shadow-blue-500/20 transition-all">
+								<span>Criar Minha Conta Grátis</span>
+								<i class="fa-solid fa-arrow-right text-sm"></i>
+							</a>
+						</div>
+
+						<!-- Right Image / Card Banner Visual -->
+						<div class="lg:col-span-6">
+							<div
+								class="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900">
+								<div
+									class="absolute inset-0 bg-gradient-to-tr from-blue-900/90 via-slate-900/80 to-blue-600/40 z-10">
+								</div>
+
+								<!-- Content inside Banner -->
+								<div
+									class="relative z-20 p-8 sm:p-12 text-white flex flex-col justify-between min-h-[360px]">
+									<div class="flex items-center justify-between">
+										<span
+											class="px-3 py-1 rounded-full bg-blue-500/30 text-blue-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-md border border-blue-400/30">
+											About JFLoader
+										</span>
+										<i class="fa-solid fa-cube text-white/40 text-2xl"></i>
+									</div>
+
+									<div class="mt-auto">
+										<h3 class="text-3xl font-bold font-heading text-white mb-2">About</h3>
+										<p
+											class="text-slate-300 text-xs sm:text-sm max-w-md leading-relaxed mb-6 opacity-80">
+											Solução moderna para armazenamento seguro de dados na nuvem com autenticação
+											relacional.
+										</p>
+
+										<div
+											class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/15">
+											<span
+												class="text-[11px] uppercase font-bold text-cyan-300 tracking-wider block mb-1">CLOUD
+												ARCHITECTURE</span>
+											<h4 class="text-sm font-bold text-white">Modern & Reliable Storage</h4>
+											<p class="text-xs text-slate-300">Infinito para suportar o seu
+												acompanhamento de dados com transparência.</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</section>
+
+			<!-- CONHEÇA O DESENVOLVEDOR SECTION -->
+			<section class="py-20 bg-slate-50">
+				<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div
+						class="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-xl relative overflow-hidden text-center">
+						<!-- Top Accent Bar -->
+						<div
+							class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-700">
+						</div>
+
+						<!-- Developer Avatar -->
+						<div class="relative w-28 h-28 mx-auto mb-4">
+							<img src="/imgs/developer.jpeg"
+								class="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
+								alt="Foto do Desenvolvedor">
+							<div class="absolute bottom-0 right-0 w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs border-2 border-white shadow-sm"
+								title="Desenvolvedor Verificado">
+								<i class="fa-solid fa-check"></i>
+							</div>
+						</div>
+
+						<!-- Header & Badge -->
+						<h3 class="text-2xl font-bold font-heading text-slate-900 mb-1">Conheça o Desenvolvedor</h3>
+						<p class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">Desenvolvedor</p>
+
+						<!-- GitHub Link Badge -->
+						<a href="https://github.com/jormaedes/file_uploader" target="_blank"
+							class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-xs font-semibold hover:bg-blue-100 transition-colors mb-6">
+							<span>Out Shots • The Odin Project</span>
+							<i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+						</a>
+
+						<!-- Description -->
+						<p class="text-sm text-slate-600 leading-relaxed max-w-2xl mx-auto mb-8 font-normal">
+							Olá! Sou o idealizador do <strong class="text-slate-900">JFLoader</strong>. Este projeto faz
+							parte do percurso avançado de Node.js do The Odin Project, focado na construção de sistemas
+							robustos e de produção. A prioridade deste projeto foi aliar segurança de dados (através de
+							PostgreSQL & Prisma ORM) com uma experiência visual inspirada na agilidade e clareza do
+							Tailwind.
+						</p>
+
+						<!-- Social Button Icons -->
+						<div class="flex items-center justify-center gap-3">
+							<a href="mailto:jormahed@gmail.com"
+								class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 flex items-center justify-center transition-colors shadow-xs"
+								title="Enviar E-mail">
+								<i class="fa-solid fa-envelope"></i>
+							</a>
+							<a href="https://github.com/jormaedes/file_uploader" target="_blank"
+								class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 flex items-center justify-center transition-colors shadow-xs"
+								title="Perfil GitHub">
+								<i class="fa-brands fa-github"></i>
+							</a>
+							<a href="https://github.com/jormaedes" target="_blank"
+								class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 flex items-center justify-center transition-colors shadow-xs"
+								title="Portfolio / Website">
+								<i class="fa-solid fa-globe"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- GUIA PRÁTICO - COMO USAR SECTION -->
+			<section id="how-it-works" class="py-20 bg-white">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+					<!-- Section Header -->
+					<div class="text-center max-w-3xl mx-auto mb-16">
+						<span
+							class="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+							GUIA PRÁTICO
+						</span>
+						<h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 mt-4 mb-4">
+							Como Usar o JFLoader
+						</h2>
+						<p class="text-slate-600 text-base">
+							Comece a usar seu file uploader em três passos simples e intuitivos.
+						</p>
+					</div>
+
+					<!-- Step Cards Grid -->
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+						<!-- Step 1 -->
+						<div
+							class="bg-slate-50/80 rounded-3xl p-8 border border-slate-200/80 text-center relative group hover:border-blue-300 hover:shadow-lg transition-all">
+							<!-- Step Number Badge -->
+							<div
+								class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-extrabold font-heading text-lg flex items-center justify-center mx-auto mb-6 shadow-md shadow-blue-500/20 group-hover:scale-110 transition-transform">
+								1
+							</div>
+							<div
+								class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mx-auto mb-4">
+								<i class="fa-solid fa-user-plus"></i>
+							</div>
+							<h3 class="text-xl font-bold font-heading text-slate-900 mb-3">Crie sua Conta</h3>
+							<p class="text-sm text-slate-600 leading-relaxed">
+								Faça seu cadastro rápido para ter seu espaço de armazenamento isolado e protegido por
+								credenciais seguras.
+							</p>
+						</div>
+
+						<!-- Step 2 -->
+						<div
+							class="bg-slate-50/80 rounded-3xl p-8 border border-slate-200/80 text-center relative group hover:border-blue-300 hover:shadow-lg transition-all">
+							<!-- Step Number Badge -->
+							<div
+								class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-extrabold font-heading text-lg flex items-center justify-center mx-auto mb-6 shadow-md shadow-blue-500/20 group-hover:scale-110 transition-transform">
+								2
+							</div>
+							<div
+								class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mx-auto mb-4">
+								<i class="fa-solid fa-folder-plus"></i>
+							</div>
+							<h3 class="text-xl font-bold font-heading text-slate-900 mb-3">Faça Upload & Organize</h3>
+							<p class="text-sm text-slate-600 leading-relaxed">
+								Arraste ou selecione arquivos para a nuvem e monte sua hierarquia de pastas com total
+								autonomia.
+							</p>
+						</div>
+
+						<!-- Step 3 -->
+						<div
+							class="bg-slate-50/80 rounded-3xl p-8 border border-slate-200/80 text-center relative group hover:border-blue-300 hover:shadow-lg transition-all">
+							<!-- Step Number Badge -->
+							<div
+								class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-extrabold font-heading text-lg flex items-center justify-center mx-auto mb-6 shadow-md shadow-blue-500/20 group-hover:scale-110 transition-transform">
+								3
+							</div>
+							<div
+								class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mx-auto mb-4">
+								<i class="fa-solid fa-share-nodes"></i>
+							</div>
+							<h3 class="text-xl font-bold font-heading text-slate-900 mb-3">Acesse & Compartilhe</h3>
+							<p class="text-sm text-slate-600 leading-relaxed">
+								Acesse seus arquivos de qualquer instante ou gere links protegidos para compartilhamento
+								imediato.
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</section>
+
+			<!-- CALL TO ACTION BANNER -->
+			<section class="py-12 bg-white">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div
+						class="bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 rounded-3xl p-8 sm:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl shadow-blue-600/20">
+						<div>
+							<h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-white mb-2">
+								Pronto para testar o JFLoader?
+							</h2>
+							<p class="text-blue-100 text-base opacity-90">
+								Experimente o poder de um file uploader moderno inspirado no Tailwind.
+							</p>
+						</div>
+
+						<a href="/signup"
+							class="px-8 py-4 bg-white text-blue-600 hover:text-blue-700 font-bold rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all flex items-center gap-2 text-base whitespace-nowrap">
+							<span>Criar Conta Grátis</span>
+							<i class="fa-solid fa-arrow-right text-sm"></i>
+						</a>
+					</div>
+				</div>
+			</section>
+
 		</main>
+
+		<!-- Footer -->
 		<%- include('footer') %>
 </body>
 
