@@ -203,6 +203,10 @@ homeUserRouter.post('/:username/folders/:folderId/uploadFile', upload.single('fi
 		if (!file) {
 			return res.status(400).send('No file uploaded');
 		}
+		const size = file.size;
+		if (size > 5 * 1024 * 1024) {
+			return res.redirect(`/home/${username}/folders/${folderId}?error=O+arquivo+é+maior+que+5MB.`);
+		}
 		const uploadResult = await new Promise((resolve, reject) => {
 			cloudinary.uploader.upload_stream(
 				{
