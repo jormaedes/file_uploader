@@ -276,4 +276,40 @@ homeUserRouter.get('/:username/folders/:folderId/deleteFile/:fileId', isAuthenti
 	}
 });
 
+homeUserRouter.get('/:username/folders/:folderId/downloadFile/:fileId', isAuthenticated, async (req, res) => {
+	try {
+		const { username, fileId } = req.params;
+		const userId = req.session.userId;
+		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
+
+		if (username !== userAuth.username) {
+			return res.status(403).render('403', { url: req.originalUrl });
+		}
+
+		const file = await prisma.file.findFirst({
+			where: {
+				id: parseInt(fileId),
+				userId: userAuth.id,
+			},
+		});
+
+		if (!file) {
+			return res.status(404).render('404', { url: req.originalUrl });
+		}
+
+		const resourceType = file.type.split('/')[0]; // "image", "raw", "video"
+
+		const downloadUrl = cloudinary.url(file.cloudinaryId, {
+			resource_type: resourceType,
+			secure: true,
+			flags: `attachment:${encodeURIComponent(file.name)}`,
+		});
+
+		res.redirect(downloadUrl);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Internal server error');
+	}
+});
+
 export default homeUserRouter;
