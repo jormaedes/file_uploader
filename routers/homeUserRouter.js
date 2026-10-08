@@ -4,6 +4,12 @@ import { prisma } from '../lib/prisma.js';
 import { deleteFolderRecursive } from '../utils/utils.js';
 import cloudinary from '../lib/cloudinary.js';
 import multer from 'multer';
+import { createReadStream, createWriteStream } from 'node:fs';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -277,18 +283,19 @@ homeUserRouter.get('/:username/folders/:folderId/deleteFile/:fileId', isAuthenti
 });
 
 homeUserRouter.get('/:username/folders/:folderId/downloadFile/:fileId', isAuthenticated, async (req, res) => {
+	let temporaryDirectory;
 	try {
 		const { username, fileId } = req.params;
 		const userId = req.session.userId;
 		const userAuth = await prisma.user.findUnique({ where: { id: userId } });
 
-		if (username !== userAuth.username) {
+		if (!userAuth || username !== userAuth.username) {
 			return res.status(403).render('403', { url: req.originalUrl });
 		}
 
 		const file = await prisma.file.findFirst({
 			where: {
-				id: parseInt(fileId),
+				id: parseInt(fileId, 10),
 				userId: userAuth.id,
 			},
 		});
@@ -297,18 +304,57 @@ homeUserRouter.get('/:username/folders/:folderId/downloadFile/:fileId', isAuthen
 			return res.status(404).render('404', { url: req.originalUrl });
 		}
 
-		const resourceType = file.type.split('/')[0]; // "image", "raw", "video"
+		const fileUrl = new URL(file.url);
+		const cloudName = cloudinary.config().cloud_name;
+		if (
+			fileUrl.hostname !== 'res.cloudinary.com' ||
+			!fileUrl.pathname.startsWith(`/${cloudName}/`)
+		) {
+			console.error(`URL Cloudinary inválido para o ficheiro ${file.id}.`);
+			return res.status(502).send('Não foi possível descarregar este ficheiro.');
+		}
 
-		const downloadUrl = cloudinary.url(file.cloudinaryId, {
-			resource_type: resourceType,
-			secure: true,
-			flags: `attachment:${encodeURIComponent(file.name)}`,
-		});
+		fileUrl.protocol = 'https:';
+		const pathSegments = fileUrl.pathname.split('/');
+		const uploadSegmentIndex = pathSegments.indexOf('upload');
+		const resourceType = pathSegments[uploadSegmentIndex - 1];
+		if (uploadSegmentIndex < 1 || !['image', 'video', 'raw'].includes(resourceType)) {
+			console.error(`Tipo de recurso Cloudinary inválido para o ficheiro ${file.id}.`);
+			return res.status(502).send('Não foi possível descarregar este ficheiro.');
+		}
 
-		res.redirect(downloadUrl);
+		if (resourceType !== 'raw') {
+			pathSegments.splice(uploadSegmentIndex + 1, 0, 'fl_attachment');
+			fileUrl.pathname = pathSegments.join('/');
+		}
+
+		const upstream = await fetch(fileUrl);
+		if (!upstream.ok || !upstream.body) {
+			await upstream.body?.cancel();
+			console.error(`Falha ao obter ficheiro ${file.id} do Cloudinary: ${upstream.status}.`);
+			return res.status(502).send('Não foi possível descarregar este ficheiro.');
+		}
+
+		temporaryDirectory = await mkdtemp(path.join(tmpdir(), 'jfloader-download-'));
+		const temporaryFile = path.join(temporaryDirectory, 'download');
+		await pipeline(Readable.fromWeb(upstream.body), createWriteStream(temporaryFile));
+
+		res.attachment(file.name);
+		res.type('application/octet-stream');
+		await pipeline(createReadStream(temporaryFile), res);
 	} catch (error) {
-		console.log(error);
-		res.status(500).send('Internal server error');
+		console.error('Erro ao descarregar ficheiro:', error);
+		if (!res.headersSent) {
+			res.status(500).send('Erro interno ao descarregar o ficheiro.');
+		}
+	} finally {
+		if (temporaryDirectory) {
+			try {
+				await rm(temporaryDirectory, { recursive: true, force: true });
+			} catch (error) {
+				console.error('Erro ao apagar o ficheiro temporário do download:', error);
+			}
+		}
 	}
 });
 

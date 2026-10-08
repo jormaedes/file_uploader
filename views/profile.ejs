@@ -34,7 +34,7 @@
 
 			<!-- SIDEBAR -->
 			<aside id="mobileSidebar"
-				class="fixed inset-y-0 left-0 w-72 bg-white z-50 p-6 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:static md:w-64 md:z-auto border-r border-slate-200/80 shrink-0">
+				class="fixed inset-y-0 left-0 w-72 bg-white z-50 p-6 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:fixed md:left-0 md:top-0 md:h-screen md:w-64 md:overflow-y-auto md:z-40 border-r border-slate-200/80 shrink-0">
 				<div>
 					<!-- Logo & Mobile Close Button -->
 					<div class="flex items-center justify-between mb-8">
@@ -165,7 +165,7 @@
 			</aside>
 
 			<!-- MAIN CONTENT AREA -->
-			<div class="flex-grow flex flex-col min-w-0">
+			<div class="flex-grow flex flex-col min-w-0 md:ml-64">
 
 				<!-- TOP HEADER BAR -->
 				<header

@@ -7,6 +7,7 @@ A full-stack file management application built as part of [The Odin Project](htt
 - **User authentication** — sign up and log in with hashed passwords (bcrypt), session-based auth persisted in PostgreSQL
 - **Nested folders** — create folders inside folders with unlimited depth, via a self-referencing relation
 - **File upload** — upload files of any type (images, PDFs, archives, etc.), stored on Cloudinary
+- **File downloads** — download any stored file type through an authenticated application route
 - **File & folder management** — rename, browse, and delete files and folders (including recursive deletion of subfolders and their contents, both in the database and on Cloudinary)
 - **Per-user isolation** — every user only has access to their own files and folders
 

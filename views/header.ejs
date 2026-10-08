@@ -1,69 +1,52 @@
-<header class="sticky top-0 z-50 border-b border-slate-200 bg-white">
-	<div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
-		<div class="flex h-20 items-center justify-between gap-4">
-			<div class="flex shrink-0 items-center gap-3">
-				<a href="/" class="inline-flex items-center gap-2.5 group">
-					<div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform">
-						<i class="fa-solid fa-cloud text-xl"></i>
-					</div>
-					<div class="text-left">
-						<div class="flex items-center gap-1.5">
-							<span class="text-2xl font-bold font-heading text-slate-900 tracking-tight">JFLoader</span>
-							<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 uppercase">CLOUD</span>
-						</div>
-						<span class="block text-xs text-slate-400 font-medium -mt-0.5">Armazenamento Rápido</span>
-					</div>
-				</a>
-			</div>
+<header class="sticky top-0 z-50 border-b border-slate-200/80 bg-[#f7f7f7]">
+	<div class="mx-auto max-w-[1600px] px-4 py-3 sm:px-6 lg:px-8">
+		<div class="flex items-center justify-between gap-3">
+			<a href="/" class="flex shrink-0 items-center gap-2.5">
+				<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1d4ed8] text-white shadow-sm">
+					<i class="fa-solid fa-cloud text-lg"></i>
+				</span>
+				<span class="font-heading text-lg font-bold tracking-tight text-slate-900">JFLoader</span>
+			</a>
 
-			<nav class="hidden items-center gap-7 text-[15px] font-medium text-slate-700 md:flex">
-				<a href="/" class="transition-colors hover:text-slate-900">Home</a>
-				<a href="#about" class="transition-colors hover:text-slate-900">Sobre</a>
-				<a href="#features" class="transition-colors hover:text-slate-900">Recursos</a>
-				<a href="#tech" class="transition-colors hover:text-slate-900">Tecnologia</a>
-				<a href="#how-it-works" class="transition-colors hover:text-slate-900">Como funciona</a>
+			<nav class="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex">
+				<a href="/#about" class="transition-colors hover:text-blue-700">Sobre</a>
+				<a href="/#features" class="transition-colors hover:text-blue-700">Recursos</a>
+				<a href="/#tech" class="transition-colors hover:text-blue-700">Tecnologia</a>
+				<a href="/#how-it-works" class="transition-colors hover:text-blue-700">Como funciona</a>
 			</nav>
 
-			<div class="flex items-center gap-3 shrink-0">
+			<div class="flex shrink-0 items-center gap-2 sm:gap-3">
 				<% if (locals.user) { %>
-					<a href="/home/<%= locals.user.username %>" class="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-100">
-						<img src="<%= locals.user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="h-8 w-8 rounded-full object-cover" alt="Avatar">
-						<span class="hidden sm:inline"><%= locals.user.username %></span>
+					<a href="/home/<%= locals.user.username %>" class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 sm:px-3">
+						<img src="<%= locals.user.profilePicture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' %>" class="h-8 w-8 rounded-full border border-slate-200 object-cover" alt="Avatar">
+						<span class="hidden sm:inline"><%= locals.user.firstName %> <%= locals.user.lastName %></span>
 					</a>
-					<a href="/logout" class="hidden rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 sm:inline-flex">Sair</a>
+					<a href="/logout" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:px-4 sm:text-sm">Sair</a>
 				<% } else { %>
-					<div class="hidden items-center rounded-full border border-slate-300 bg-[#f3f4f6] p-1 shadow-sm sm:flex">
-						<button type="button" class="flex h-9 min-w-[2.5rem] items-center justify-center rounded-full bg-white px-3 text-[10px] font-semibold text-slate-800 shadow-sm">
-							PT
-						</button>
-						<button type="button" class="flex h-9 min-w-[2.5rem] items-center justify-center rounded-[0.7rem] px-3 text-[10px] font-semibold text-slate-500 transition hover:text-slate-800">
-							EN
-						</button>
-					</div>
-					<div class="hidden items-center gap-3 sm:flex">
-						<a href="/login" class="inline-flex items-center justify-center rounded-[0.9rem] border border-slate-300 bg-[#f3f4f6] px-6 py-3 text-[1.05rem] font-semibold text-slate-800 shadow-sm transition hover:bg-slate-200">
-							Login
-						</a>
-						<a href="/signup" class="inline-flex items-center justify-center rounded-[0.9rem] bg-[#1856f3] px-6 py-3 text-[1.05rem] font-semibold text-white shadow-sm transition hover:bg-[#1249d8]">
-							Cadastrar
-						</a>
-					</div>
+					<a href="/login" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:px-4 sm:text-sm">Entrar</a>
+					<a href="/signup" class="rounded-lg bg-[#1d4ed8] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#1852d5] sm:px-4 sm:text-sm">Criar conta</a>
 				<% } %>
 
 				<details class="relative md:hidden">
-					<summary class="list-none cursor-pointer p-3 text-black transition hover:bg-[#1f1f1f]">
-						<i class="fa-solid fa-bars text-lg"></i>
+					<summary class="flex h-9 w-9 list-none cursor-pointer items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100">
+						<i class="fa-solid fa-bars text-sm"></i>
 					</summary>
-					<nav class="absolute right-0 top-[calc(100%+0.75rem)] w-56 rounded-2xl border border-slate-200 bg-white p-3 shadow-xl">
-						<a href="/" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Home</a>
-						<a href="#about" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Sobre</a>
-						<a href="#features" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Recursos</a>
-						<a href="#tech" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Tecnologia</a>
-						<a href="#how-it-works" class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900">Como funciona</a>
-						<div class="mt-2 border-t border-slate-200 pt-2">
-							<a href="/login" class="block rounded-[0.9rem] border border-slate-300 bg-[#f3f4f6] px-3 py-2 text-center text-sm font-semibold text-slate-800 transition hover:bg-slate-200">Login</a>
-							<a href="/signup" class="mt-2 block rounded-[0.9rem] bg-[#1856f3] px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-[#1249d8]">Cadastrar</a>
-						</div>
+					<nav class="absolute right-0 top-[calc(100%+0.75rem)] w-56 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
+						<a href="/#about" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100">Sobre</a>
+						<a href="/#features" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100">Recursos</a>
+						<a href="/#tech" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100">Tecnologia</a>
+						<a href="/#how-it-works" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100">Como funciona</a>
+						<% if (locals.user) { %>
+							<div class="mt-1 border-t border-slate-100 pt-1">
+								<a href="/home/<%= locals.user.username %>" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100">Os meus ficheiros</a>
+								<a href="/logout" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100">Sair</a>
+							</div>
+						<% } else { %>
+							<div class="mt-1 border-t border-slate-100 pt-1">
+								<a href="/login" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100">Entrar</a>
+								<a href="/signup" class="block rounded-lg px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-50">Criar conta</a>
+							</div>
+						<% } %>
 					</nav>
 				</details>
 			</div>

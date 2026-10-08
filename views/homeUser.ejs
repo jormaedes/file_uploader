@@ -68,7 +68,7 @@
 		<div id="sidebarBackdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
 
 		<!-- SIDEBAR (RESPONSIVE DRAWER ON MOBILE, FIXED SIDEBAR ON DESKTOP) -->
-		<aside id="mobileSidebar" class="fixed inset-y-0 left-0 w-72 bg-[#f9fafb] z-50 p-5 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:static md:w-64 md:z-auto border-r border-slate-200/80 shrink-0">
+		<aside id="mobileSidebar" class="fixed inset-y-0 left-0 w-72 bg-[#f9fafb] z-50 p-5 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:fixed md:left-0 md:top-0 md:h-screen md:w-64 md:overflow-y-auto md:z-40 border-r border-slate-200/80 shrink-0">
 			<div>
 				<!-- Logo & Mobile Close Button -->
 				<div class="flex items-center justify-between mb-8">
@@ -177,7 +177,7 @@
 		</aside>
 
 		<!-- MAIN CONTENT AREA -->
-		<div class="flex-grow flex flex-col min-w-0">
+		<div class="flex-grow flex flex-col min-w-0 md:ml-64">
 			
 			<!-- TOP HEADER BAR -->
 			<header class="bg-[#f7f7f7] border-b border-slate-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-30">
@@ -352,7 +352,7 @@
 												</td>
 												<td class="px-6 py-4 text-right whitespace-nowrap">
 													<div class="flex items-center justify-end gap-3 text-slate-400">
-														<a href="<%= file.url %>" target="_blank" download="<%= file.name %>" class="p-1 transition hover:text-blue-600" title="Download">
+														<a href="<%= '/home/' + user.username + '/folders/' + currentFolder.id + '/downloadFile/' + file.id %>" class="p-1 transition hover:text-blue-600" title="Download">
 															<i class="fa-solid fa-download text-sm"></i>
 														</a>
 														<button onclick="navigator.clipboard.writeText('<%= file.url %>'); alert('Link do arquivo copiado!');" class="cursor-pointer p-1 transition hover:text-blue-600" title="Compartilhar Link">
